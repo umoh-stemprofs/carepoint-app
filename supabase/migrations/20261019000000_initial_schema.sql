@@ -224,6 +224,19 @@ create policy profiles_doctor_reads_patients on public.profiles
     )
   );
 
+-- A patient must see which doctor they are booked with. Without this, the
+-- doctors -> profiles join used by the booking wizard and the appointments view
+-- silently returns null names under RLS.
+
+drop policy if exists profiles_patient_reads_doctors on public.profiles;
+create policy profiles_patient_reads_doctors on public.profiles
+  for select using (
+    exists (
+      select 1 from public.doctors d
+      where d.id = profiles.id
+    )
+  );
+
 -- doctors -------------------------------------------------------------------
 
 drop policy if exists doctors_public_read on public.doctors;

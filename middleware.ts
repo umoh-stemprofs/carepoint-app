@@ -81,5 +81,5 @@ export async function middleware(request: NextRequest) {
 export const config = {
   // An explicit allow-list: static assets (/_next/, /favicon.ico, /assets/) and
   // the public landing page are never evaluated by this middleware.
-  matcher: ["/book", "/appointments", "/dashboard", "/login"],
+  matcher: ["/book", "/appointments", "/dashboard", "/login", "/health-profile"],
 };
