@@ -1,69 +1,60 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="home-page">
+      <header className="topbar">
+        <Link className="brand" href="/">
+          <span className="brand-mark" aria-hidden="true">
+            +
+          </span>
+          <span>CarePoint</span>
+        </Link>
+        <span className="service-label">TELEHEALTH AND AI CLINICAL SUPPORT</span>
+      </header>
+
+      <section className="welcome">
+        <p className="eyebrow">CAREPOINT — SEE A DOCTOR</p>
+        <h1>See a doctor without the long queue.</h1>
+        <p className="welcome-copy">
+          Book an appointment in a few taps, keep your health records in one place, and let
+          your doctor review your case before you arrive.
+        </p>
+      </section>
+
+      <section className="action-grid" aria-label="Main actions">
+        <Link className="action-tile action-primary" href="/patient/book">
+          <span className="tile-index">01 / BOOKING</span>
+          <span className="tile-title">BOOK DOCTOR NOW</span>
+          <span className="tile-caption">
+            Choose a doctor, a day and a time in three simple steps.
+          </span>
+          <span className="tile-arrow" aria-hidden="true">
+            →
+          </span>
+        </Link>
+        <Link className="action-tile action-secondary" href="/patient/appointments">
+          <span className="tile-index">02 / SCHEDULE</span>
+          <span className="tile-title">MY APPOINTMENTS</span>
+          <span className="tile-caption">
+            Review upcoming visits and past consultations.
+          </span>
+          <span className="tile-arrow" aria-hidden="true">
+            →
+          </span>
+        </Link>
+      </section>
+
+      <section className="next-steps">
+        <h2>
+          <span className="anchor-target" id="how-it-works" />
+          Built for low-bandwidth connections and first-time smartphone users.
+        </h2>
+        <p>
+          CarePoint keeps every step visual and readable: giant buttons, plain language, and
+          a persistent emergency shortcut to 112 on every screen.
+        </p>
+      </section>
+    </main>
   );
 }
