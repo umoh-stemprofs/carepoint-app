@@ -23,7 +23,7 @@ export default function Home() {
       </section>
 
       <section className="action-grid" aria-label="Main actions">
-        <Link className="action-tile action-primary" href="/patient/book">
+        <Link className="action-tile action-primary" href="/book">
           <span className="tile-index">01 / BOOKING</span>
           <span className="tile-title">BOOK DOCTOR NOW</span>
           <span className="tile-caption">
@@ -33,7 +33,7 @@ export default function Home() {
             →
           </span>
         </Link>
-        <Link className="action-tile action-secondary" href="/patient/appointments">
+        <Link className="action-tile action-secondary" href="/appointments">
           <span className="tile-index">02 / SCHEDULE</span>
           <span className="tile-title">MY APPOINTMENTS</span>
           <span className="tile-caption">
