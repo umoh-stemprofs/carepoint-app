@@ -1,17 +1,11 @@
 import Link from "next/link";
 
+import Topbar from "@/components/common/Topbar";
+
 export default function Home() {
   return (
     <main className="home-page">
-      <header className="topbar">
-        <Link className="brand" href="/">
-          <span className="brand-mark" aria-hidden="true">
-            +
-          </span>
-          <span>CarePoint</span>
-        </Link>
-        <span className="service-label">TELEHEALTH AND AI CLINICAL SUPPORT</span>
-      </header>
+      <Topbar label="TELEHEALTH AND AI CLINICAL SUPPORT" />
 
       <section className="welcome">
         <p className="eyebrow">CAREPOINT — SEE A DOCTOR</p>
