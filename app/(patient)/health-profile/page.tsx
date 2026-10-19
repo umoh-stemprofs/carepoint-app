@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import Topbar from "@/components/common/Topbar";
 import { tryCreateSupabaseBrowserClient } from "@/lib/supabase/client";
@@ -27,6 +27,20 @@ const EMPTY: FormState = {
 };
 
 const LOCAL_KEY = "carepoint.health-profile.draft";
+
+/** Plan decision D7: 5 MB ceiling and a strict MIME whitelist. */
+const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
+const ALLOWED_MIME = ["application/pdf", "image/png", "image/jpeg"] as const;
+const STORAGE_BUCKET = "health-records";
+
+function formatMegabytes(bytes: number): string {
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+/** Storage keys must not contain path separators or shell-sensitive characters. */
+function safeFileName(name: string): string {
+  return name.replace(/[/\\^%*?:"<>|\s]+/g, "_").slice(-80) || "record";
+}
 
 type Row = {
   medical_history: string | null;
@@ -89,6 +103,12 @@ export default function HealthProfilePage() {
   const [notice, setNotice] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadIssue, setUploadIssue] = useState<string | null>(null);
+  const [uploadNotice, setUploadNotice] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -199,6 +219,56 @@ export default function HealthProfilePage() {
       setNotice("saved-local");
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function handleUpload(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setUploadIssue(null);
+    setUploadNotice(null);
+
+    if (!pendingFile) {
+      setUploadIssue("Choose a file to upload first.");
+      return;
+    }
+    if (pendingFile.size > MAX_UPLOAD_BYTES) {
+      setUploadIssue(
+        `That file is ${formatMegabytes(pendingFile.size)}. The limit is ${formatMegabytes(MAX_UPLOAD_BYTES)}.`,
+      );
+      return;
+    }
+    if (!(ALLOWED_MIME as readonly string[]).includes(pendingFile.type)) {
+      setUploadIssue("Only PDF, PNG and JPG files are accepted.");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const supabase = tryCreateSupabaseBrowserClient();
+      if (!supabase) throw new Error("Supabase is not configured.");
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("Please sign in again before uploading.");
+
+      // Stored under patient_id/ so Storage RLS can scope it per patient (D7).
+      const key = `${user.id}/${Date.now()}-${safeFileName(pendingFile.name)}`;
+      const { error } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .upload(key, pendingFile, { contentType: pendingFile.type, upsert: false });
+
+      if (error) throw new Error(error.message);
+
+      setUploadNotice(`Uploaded ${pendingFile.name} to your record.`);
+      setPendingFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      setUploadIssue(
+        error instanceof Error ? error.message : "The file could not be uploaded.",
+      );
+    } finally {
+      setUploading(false);
     }
   }
 
@@ -356,6 +426,95 @@ export default function HealthProfilePage() {
           {busy ? "SAVING…" : "SAVE PROFILE"}
         </button>
       </form>
+
+      <hr style={{ border: "none", borderTop: "1px solid var(--line)", margin: "40px 0 0" }} />
+
+      <section aria-label="Medical documents" style={{ marginTop: 26 }}>
+        <p className="eyebrow" style={{ marginBottom: 10 }}>
+          MEDICAL DOCUMENTS
+        </p>
+        <h2 style={{ fontSize: 24, margin: "0 0 8px" }}>Upload a record</h2>
+        <p className="welcome-copy" style={{ fontSize: 17, marginTop: 0 }}>
+          Lab results, prescriptions or photos of paper records. PDF, PNG or JPG, up to 5 MB.
+        </p>
+
+        <form onSubmit={handleUpload} noValidate>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/pdf,image/png,image/jpeg,.pdf,.png,.jpg,.jpeg"
+            onChange={(event) => {
+              setPendingFile(event.target.files?.[0] ?? null);
+              setUploadIssue(null);
+              setUploadNotice(null);
+            }}
+            style={{
+              display: "block",
+              width: "100%",
+              fontSize: 17,
+              padding: "16px 14px",
+              border: "2px dashed var(--line)",
+              borderRadius: 8,
+              background: "#fff",
+            }}
+          />
+
+          {uploadIssue ? (
+            <p
+              role="alert"
+              style={{
+                marginTop: 16,
+                padding: "14px 16px",
+                borderRadius: 8,
+                background: "#fee4e2",
+                border: "2px solid var(--red)",
+                color: "#7a271a",
+                fontSize: 16,
+              }}
+            >
+              {uploadIssue}
+            </p>
+          ) : null}
+
+          {uploadNotice ? (
+            <p
+              role="status"
+              style={{
+                marginTop: 16,
+                padding: "14px 16px",
+                borderRadius: 8,
+                background: "#dcfae6",
+                border: "2px solid var(--green)",
+                color: "#05603a",
+                fontSize: 16,
+                fontWeight: 700,
+              }}
+            >
+              {uploadNotice}
+            </p>
+          ) : null}
+
+          <button
+            type="submit"
+            disabled={uploading}
+            style={{
+              width: "100%",
+              minHeight: 64,
+              marginTop: 20,
+              fontSize: 19,
+              fontWeight: 750,
+              borderRadius: 8,
+              border: "2px solid var(--blue)",
+              background: uploading ? "#fff" : "var(--blue)",
+              color: uploading ? "var(--blue)" : "#fff",
+              cursor: uploading ? "wait" : "pointer",
+              opacity: uploading ? 0.7 : 1,
+            }}
+          >
+            {uploading ? "UPLOADING…" : "UPLOAD DOCUMENT"}
+          </button>
+        </form>
+      </section>
 
       <p className="welcome-copy" style={{ marginTop: 30, fontSize: 16 }}>
         <Link href="/">← Back to home</Link>

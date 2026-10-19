@@ -84,7 +84,61 @@ function mapRow(row: Row): QueueItem {
   };
 }
 
-function QueueCard({ item, isToday }: { item: QueueItem; isToday: boolean }) {
+type QueueAction = "confirmed" | "completed" | "cancelled";
+
+function StatusButton({
+  label,
+  tone,
+  disabled,
+  onClick,
+}: {
+  label: string;
+  tone: "primary" | "neutral" | "danger";
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  const palette = {
+    primary: { background: "var(--green)", color: "#fff", border: "var(--green)" },
+    neutral: { background: "#fff", color: "var(--blue)", border: "var(--blue)" },
+    danger: { background: "#fff", color: "var(--red)", border: "var(--red)" },
+  }[tone];
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        minHeight: 48,
+        padding: "0 16px",
+        fontSize: 16,
+        fontWeight: 700,
+        borderRadius: 6,
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.45 : 1,
+        background: palette.background,
+        color: palette.color,
+        border: `2px solid ${palette.border}`,
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+function QueueCard({
+  item,
+  isToday,
+  busy,
+  onAction,
+}: {
+  item: QueueItem;
+  isToday: boolean;
+  busy: boolean;
+  onAction: (status: QueueAction) => void;
+}) {
+  const isFinished = item.status === "completed" || item.status === "cancelled";
+
   return (
     <article
       style={{
@@ -126,6 +180,27 @@ function QueueCard({ item, isToday }: { item: QueueItem; isToday: boolean }) {
         </span>
       </div>
       <p style={{ fontSize: 17, marginTop: 12, marginBottom: 0 }}>{item.reasonForVisit}</p>
+
+      <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
+        <StatusButton
+          label="Confirm"
+          tone="primary"
+          disabled={busy || item.status !== "pending"}
+          onClick={() => onAction("confirmed")}
+        />
+        <StatusButton
+          label="Complete"
+          tone="neutral"
+          disabled={busy || item.status !== "confirmed"}
+          onClick={() => onAction("completed")}
+        />
+        <StatusButton
+          label="Cancel"
+          tone="danger"
+          disabled={busy || isFinished}
+          onClick={() => onAction("cancelled")}
+        />
+      </div>
     </article>
   );
 }
@@ -137,6 +212,39 @@ export default function DoctorDashboardPage() {
   // Read in the effect, never during render: "current time" APIs are blocked
   // while prerendering this client component.
   const [today, setToday] = useState("");
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+
+  async function updateStatus(id: string, status: QueueAction) {
+    setActionError(null);
+    setBusyId(id);
+    try {
+      const supabase = tryCreateSupabaseBrowserClient();
+      if (!supabase) throw new Error("Supabase is not configured.");
+
+      const { data, error } = await supabase
+        .from("appointments")
+        .update({ status })
+        .eq("id", id)
+        .select("id");
+
+      if (error) throw new Error(error.message);
+      // A no-op update on sample rows must not silently claim success.
+      if (!data || data.length === 0) {
+        throw new Error("That appointment is sample data and is not stored in the database.");
+      }
+
+      setItems((previous) =>
+        previous.map((item) => (item.id === id ? { ...item, status } : item)),
+      );
+    } catch (error) {
+      setActionError(
+        error instanceof Error ? error.message : "The status could not be updated.",
+      );
+    } finally {
+      setBusyId(null);
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -218,6 +326,23 @@ export default function DoctorDashboardPage() {
         </div>
       ) : null}
 
+      {actionError ? (
+        <div
+          role="alert"
+          style={{
+            marginTop: 18,
+            padding: "14px 16px",
+            borderRadius: 8,
+            background: "#fee4e2",
+            border: "2px solid var(--red)",
+            color: "#7a271a",
+            fontSize: 16,
+          }}
+        >
+          {actionError}
+        </div>
+      ) : null}
+
       {!loading && items.length === 0 ? (
         <div className="next-steps" style={{ marginTop: 26 }}>
           <h2>
@@ -232,7 +357,13 @@ export default function DoctorDashboardPage() {
         <section aria-label="Today" style={{ display: "grid", gap: 14, marginTop: 20 }}>
           <h2 style={{ fontSize: 22, margin: "10px 0 0" }}>Today</h2>
           {todays.map((item) => (
-            <QueueCard key={item.id} item={item} isToday />
+            <QueueCard
+              key={item.id}
+              item={item}
+              isToday
+              busy={busyId === item.id}
+              onAction={(status) => void updateStatus(item.id, status)}
+            />
           ))}
         </section>
       ) : null}
@@ -241,7 +372,13 @@ export default function DoctorDashboardPage() {
         <section aria-label="Upcoming" style={{ display: "grid", gap: 14, marginTop: 28 }}>
           <h2 style={{ fontSize: 22, margin: 0 }}>Upcoming</h2>
           {upcoming.map((item) => (
-            <QueueCard key={item.id} item={item} isToday={false} />
+            <QueueCard
+              key={item.id}
+              item={item}
+              isToday={false}
+              busy={busyId === item.id}
+              onAction={(status) => void updateStatus(item.id, status)}
+            />
           ))}
         </section>
       ) : null}
