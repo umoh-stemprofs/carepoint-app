@@ -130,6 +130,52 @@ export default function BookPage() {
     };
   }, []);
 
+  // Client-side mirror of the middleware guard.
+  //
+  // middleware.ts already sends a doctor to /dashboard, but a bfcache restore,
+  // a typed URL or a stale redirect can still land a doctor here, and the
+  // wizard is four steps of a form whose final button the booking RPC will
+  // refuse. Read the role the same way the guard does — user metadata first,
+  // then the public.profiles row — and leave.
+  useEffect(() => {
+    let cancelled = false;
+
+    async function guardRole() {
+      try {
+        const supabase = createSupabaseBrowserClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (cancelled || !user) return;
+
+        const metadataRole = (user.user_metadata as { role?: unknown } | undefined)?.role;
+        if (metadataRole === "doctor") {
+          router.replace("/dashboard");
+          return;
+        }
+
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!cancelled && (profile as { role?: string } | null)?.role === "doctor") {
+          router.replace("/dashboard");
+        }
+      } catch {
+        // Signed out, unconfigured Supabase, or no profile row yet. Not a
+        // failure state: middleware and the RPC still apply either way.
+      }
+    }
+
+    guardRole();
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
+
   function resetBanner() {
     setConflict(null);
     setFailure(null);
