@@ -42,22 +42,20 @@ export default function Home() {
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-primary-container sm:h-14 sm:w-14">
               <Icon name="stethoscope" size={30} />
             </span>
-
             <span className="min-w-0 flex-1 text-label-xl uppercase leading-tight">
               Book doctor now
             </span>
+          </span>
 
+          <span className="flex items-center gap-space-xs text-body-lg text-on-primary-container">
+            <Icon name="videocam" size={24} className="shrink-0" />
+            <span className="min-w-0 flex-1">Pick a doctor, day and time</span>
             <SpeakButton
               phrase="Book a doctor now. Choose a doctor, a day and a time in three simple steps."
               label="Listen to Book Doctor Now"
               className="bg-primary text-white"
               size={48}
             />
-          </span>
-
-          <span className="flex items-center gap-1.5 text-body-lg text-on-primary-container">
-            <Icon name="videocam" size={24} className="shrink-0" />
-            Choose a doctor, a day and a time in three steps
           </span>
         </Link>
 
@@ -73,22 +71,20 @@ export default function Home() {
                 <Icon name="check" size={18} />
               </span>
             </span>
-
             <span className="min-w-0 flex-1 text-label-xl uppercase leading-tight">
               My appointments
             </span>
+          </span>
 
+          <span className="flex items-center gap-space-xs text-body-lg text-secondary-fixed">
+            <Icon name="schedule" size={24} className="shrink-0" />
+            <span className="min-w-0 flex-1">Check booked times</span>
             <SpeakButton
               phrase="My appointments. Review your booked times and past visits."
               label="Listen to My Appointments"
               className="bg-secondary-fixed text-secondary"
               size={48}
             />
-          </span>
-
-          <span className="flex items-center gap-1.5 text-body-lg text-secondary-fixed">
-            <Icon name="schedule" size={24} className="shrink-0" />
-            Check booked time and past visits
           </span>
         </Link>
       </section>
