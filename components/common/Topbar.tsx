@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import Icon from "@/components/common/Icon";
+import NotificationBell from "@/components/common/NotificationBell";
 import { tryCreateSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type AuthState = {
@@ -106,6 +107,8 @@ export default function Topbar({ label }: { label?: string }) {
       </Link>
 
       <div className="flex shrink-0 items-center gap-3">
+        {/* Plan 11.4: the notification inbox. Renders nothing when signed out. */}
+        <NotificationBell />
         {auth.email ? (
           <span className="flex items-center justify-end gap-3">
             <span className="hidden max-w-56 truncate text-label-lg text-on-surface-variant sm:block">

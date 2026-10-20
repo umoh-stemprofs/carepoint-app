@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import Icon from "@/components/common/Icon";
 import SpeakButton from "@/components/common/SpeakButton";
+import VideoCallButton from "@/components/common/VideoCall";
 import { tryCreateSupabaseBrowserClient } from "@/lib/supabase/client";
 import { formatInWat } from "@/lib/utils/datetime";
 
@@ -34,39 +35,6 @@ type Row = {
     profiles?: { full_name?: string | null } | Array<{ full_name?: string | null }> | null;
   } | null;
 };
-
-/**
- * Shown while the schema is absent or the request fails, so the page still works.
- * Built on demand rather than at module scope: evaluating Date.now() while
- * prerendering is rejected by Next.js.
- */
-function sampleAppointments(): AppointmentView[] {
-  const day = 24 * 60 * 60 * 1000;
-  return [
-    {
-      id: "sample-1",
-      appointmentDate: new Date(Date.now() + day).toISOString().slice(0, 10),
-      startTime: new Date(Date.now() + day + 8 * 60 * 60 * 1000).toISOString(),
-      endTime: new Date(Date.now() + day + 9 * 60 * 60 * 1000).toISOString(),
-      status: "confirmed",
-      slotPeriod: "morning",
-      reasonForVisit: "Persistent fever for three days",
-      doctorName: "Dr. Sarah Adeyemi",
-      specialty: "General practice",
-    },
-    {
-      id: "sample-2",
-      appointmentDate: new Date(Date.now() + 3 * day).toISOString().slice(0, 10),
-      startTime: new Date(Date.now() + 3 * day + 14 * 60 * 60 * 1000).toISOString(),
-      endTime: new Date(Date.now() + 3 * day + 15 * 60 * 60 * 1000).toISOString(),
-      status: "pending",
-      slotPeriod: "afternoon",
-      reasonForVisit: "Follow-up review",
-      doctorName: "Dr. Emeka Nwosu",
-      specialty: "Internal medicine",
-    },
-  ];
-}
 
 /**
  * Status colours come from the design system's own roles, so green keeps its
@@ -111,7 +79,6 @@ function mapRow(row: Row): AppointmentView {
 export default function AppointmentsView() {
   const [appointments, setAppointments] = useState<AppointmentView[]>([]);
   const [loading, setLoading] = useState(true);
-  const [usingSamples, setUsingSamples] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -132,7 +99,6 @@ export default function AppointmentsView() {
 
           if (!error && data && !cancelled) {
             setAppointments((data as unknown as Row[]).map(mapRow));
-            setUsingSamples(false);
             setLoading(false);
             return;
           }
@@ -147,8 +113,7 @@ export default function AppointmentsView() {
       // Deferred so state is never written synchronously inside the effect.
       await Promise.resolve();
       if (cancelled) return;
-      setAppointments(sampleAppointments());
-      setUsingSamples(true);
+      setAppointments([]);
       setLoading(false);
     }
 
@@ -164,20 +129,17 @@ export default function AppointmentsView() {
 
   return (
     <>
-      {usingSamples ? (
+      {loadError ? (
         <div
-          role="status"
-          className="mb-space-sm flex items-start gap-space-xs rounded-lg border-2 border-[#dc6803] bg-[#fde6ca] px-space-sm py-space-xs text-body-lg text-[#7a2e05]"
+          role="alert"
+          className="mb-space-sm flex items-start gap-space-xs rounded-lg border-2 border-tertiary bg-error-container px-space-sm py-space-xs text-body-lg text-on-error-container"
         >
-          <Icon name="info" size={28} className="mt-0.5 shrink-0" />
-          <span>
-            Showing sample appointments{loadError ? " — your records could not be loaded" : ""}.
-            Run the Phase 05 migration to see your real bookings.
-          </span>
+          <Icon name="error" size={28} className="mt-0.5 shrink-0" />
+          <span>Your appointments could not be loaded: {loadError}</span>
         </div>
       ) : null}
 
-      {appointments.length === 0 ? (
+      {appointments.length === 0 && !loadError ? (
         <div className="mt-space-md rounded-xl border-2 border-outline-variant bg-white p-space-md">
           <h2 className="flex items-center gap-2 text-headline-lg-mobile text-on-surface">
             <Icon name="event" size={30} className="text-primary" />
@@ -237,7 +199,13 @@ export default function AppointmentsView() {
                 <dd className="m-0 text-body-lg text-on-surface">{appointment.reasonForVisit}</dd>
               </dl>
 
-              <div className="mt-1 flex justify-end">
+              <div className="mt-1 flex flex-wrap items-center justify-end gap-space-xs">
+                {appointment.status !== "cancelled" ? (
+                  <VideoCallButton
+                    appointmentId={appointment.id}
+                    peerName={appointment.doctorName}
+                  />
+                ) : null}
                 <SpeakButton
                   phrase={`Appointment with ${appointment.doctorName}, ${appointment.status}, on ${formatInWat(
                     appointment.startTime,

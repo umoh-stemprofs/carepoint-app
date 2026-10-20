@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 import Icon from "@/components/common/Icon";
 import SpeakButton from "@/components/common/SpeakButton";
@@ -16,7 +17,6 @@ type DoctorOption = {
   id: string;
   name: string;
   specialty: string;
-  isMock: boolean;
 };
 
 type DoctorRow = {
@@ -25,22 +25,6 @@ type DoctorRow = {
   is_accepting_bookings: boolean;
   profiles?: { full_name?: string } | Array<{ full_name?: string }> | null;
 };
-
-/** Shown when the doctors table is empty or not migrated yet. */
-const MOCK_DOCTORS: DoctorOption[] = [
-  {
-    id: "00000000-0000-4000-8000-000000000001",
-    name: "Dr. Sarah Adeyemi",
-    specialty: "General practice",
-    isMock: true,
-  },
-  {
-    id: "00000000-0000-4000-8000-000000000002",
-    name: "Dr. Emeka Nwosu",
-    specialty: "Internal medicine",
-    isMock: true,
-  },
-];
 
 /** Fixed WAT wall-clock slots (plan Phase 07, Step 2). */
 const TIME_SLOTS: Array<{ period: SlotPeriod; time: string; label: string; icon: string }> = [
@@ -53,12 +37,42 @@ const TIME_SLOTS: Array<{ period: SlotPeriod; time: string; label: string; icon:
 const DAY_LABELS = ["TODAY", "TOMORROW", "NEXT DAY"] as const;
 const DAY_ICONS = ["wb_sunny", "partly_cloudy_day", "event"] as const;
 
+/** Plan 11.2: the server formats and prints the simulated confirmation email. */
+async function printBookingEmail(
+  supabase: SupabaseClient,
+  appointmentId: string,
+): Promise<void> {
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) return;
+
+    await fetch("/api/email-logs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({ appointmentId }),
+    });
+  } catch {
+    // The console simulation is a convenience and must never surface to the
+    // patient: the booking already succeeded and the row is already logged in
+    // public.email_logs by the dispatch trigger.
+  }
+}
+
 export default function BookPage() {
   const router = useRouter();
 
   const [step, setStep] = useState(1);
   const [doctors, setDoctors] = useState<DoctorOption[]>([]);
-  const [usingMocks, setUsingMocks] = useState(false);
+  const [doctorsLoading, setDoctorsLoading] = useState(true);
+  const [doctorsError, setDoctorsError] = useState<string | null>(null);
+  // Periods the selected doctor has closed (plan 9.2), refetched whenever the
+  // doctor or the step changes so a toggle on the dashboard is reflected here.
+  const [doctorClosed, setDoctorClosed] = useState<SlotPeriod[]>([]);
   const [doctorId, setDoctorId] = useState<string | null>(null);
   const [dateStr, setDateStr] = useState<string | null>(null);
   const [slotPeriod, setSlotPeriod] = useState<SlotPeriod | null>(null);
@@ -73,18 +87,44 @@ export default function BookPage() {
   // effect. Computing it in the click handler satisfies both.
   const [days, setDays] = useState<Array<{ label: string; date: string }>>([]);
 
+  // "Now" is captured on every entry to step 2: a slot that has already gone
+  // by today (9 AM when it is 1 PM) must be refused, not offered.
+  const [nowMs, setNowMs] = useState(0);
+  const [today, setToday] = useState("");
+
   function ensureDays() {
+    const now = Date.now();
+    setNowMs(now);
+    setToday(watDateOnly(new Date(now)));
     if (days.length > 0) return;
     setDays(
       DAY_LABELS.map((label, index) => ({
         label,
-        date: watDateOnly(new Date(Date.now() + index * 24 * 60 * 60 * 1000)),
+        date: watDateOnly(new Date(now + index * 24 * 60 * 60 * 1000)),
       })),
     );
   }
 
   const selectedDoctor = doctors.find((doctor) => doctor.id === doctorId) ?? null;
   const selectedSlot = TIME_SLOTS.find((slot) => slot.period === slotPeriod) ?? null;
+
+  const closedPeriods = new Set(doctorClosed);
+
+  /** "passed" = already gone by today; "closed" = the doctor shut that period. */
+  function slotState(slot: { period: SlotPeriod; time: string }): "open" | "passed" | "closed" {
+    if (closedPeriods.has(slot.period)) return "closed";
+    if (
+      dateStr &&
+      dateStr === today &&
+      nowMs > 0 &&
+      watLocalToUtc(dateStr, slot.time).getTime() <= nowMs
+    ) {
+      return "passed";
+    }
+    return "open";
+  }
+
+  const selectedSlotState = selectedSlot ? slotState(selectedSlot) : "open";
 
   useEffect(() => {
     let cancelled = false;
@@ -96,39 +136,74 @@ export default function BookPage() {
           .from("doctors")
           .select("id, specialty, is_accepting_bookings, profiles(full_name)")
           .eq("is_accepting_bookings", true)
-          .limit(10);
+          .order("created_at", { ascending: true })
+          .limit(20);
 
-        if (!cancelled && !error && data && data.length > 0) {
-          const rows = data as unknown as DoctorRow[];
-          setDoctors(
-            rows.map((row) => {
-              const embedded = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles;
-              return {
-                id: row.id,
-                name: embedded?.full_name || row.specialty || "CarePoint doctor",
-                specialty: row.specialty || "General practice",
-                isMock: false,
-              };
-            }),
-          );
-          setUsingMocks(false);
+        if (cancelled) return;
+        if (error) {
+          setDoctorsError(error.message);
           return;
         }
-      } catch {
-        // Network or unconfigured Supabase — fall through to the mock list.
-      }
 
-      if (!cancelled) {
-        setDoctors(MOCK_DOCTORS);
-        setUsingMocks(true);
+        const rows = (data ?? []) as unknown as DoctorRow[];
+        setDoctors(
+          rows.map((row) => {
+            const embedded = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles;
+            return {
+              id: row.id,
+              name: embedded?.full_name || row.specialty || "CarePoint doctor",
+              specialty: row.specialty || "General practice",
+            };
+          }),
+        );
+      } catch (error) {
+        if (!cancelled) {
+          setDoctorsError(
+            error instanceof Error ? error.message : "the doctor list could not be reached",
+          );
+        }
+      } finally {
+        if (!cancelled) setDoctorsLoading(false);
       }
     }
 
-    loadDoctors();
+    void loadDoctors();
     return () => {
       cancelled = true;
     };
   }, []);
+
+  // The selected doctor's closed periods (plan 9.2). Refetched whenever step 2
+  // is entered, so closing a period on the dashboard hides it here immediately.
+  useEffect(() => {
+    if (!doctorId || step !== 2) return;
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const supabase = createSupabaseBrowserClient();
+        const { data, error } = await supabase
+          .from("doctors")
+          .select("closed_periods")
+          .eq("id", doctorId)
+          .maybeSingle();
+
+        if (cancelled) return;
+        if (!error && data) {
+          const row = data as { closed_periods?: SlotPeriod[] | null };
+          setDoctorClosed(row.closed_periods ?? []);
+        }
+      } catch {
+        // Unreachable — an empty set keeps every period bookable, and the RPC
+        // still enforces availability server-side.
+        if (!cancelled) setDoctorClosed([]);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [doctorId, step]);
 
   // Client-side mirror of the middleware guard.
   //
@@ -240,15 +315,18 @@ export default function BookPage() {
         return;
       }
 
-      const { error: rpcError } = await supabase.rpc("book_appointment_prevent_overlap", {
-        p_patient_id: user.id,
-        p_doctor_id: parsed.data.doctorId,
-        p_appointment_date: parsed.data.appointmentDate,
-        p_start_time: parsed.data.startTime,
-        p_end_time: parsed.data.endTime,
-        p_slot_period: parsed.data.slotPeriod,
-        p_reason_for_visit: parsed.data.reasonForVisit,
-      });
+      const { data: booked, error: rpcError } = await supabase.rpc(
+        "book_appointment_prevent_overlap",
+        {
+          p_patient_id: user.id,
+          p_doctor_id: parsed.data.doctorId,
+          p_appointment_date: parsed.data.appointmentDate,
+          p_start_time: parsed.data.startTime,
+          p_end_time: parsed.data.endTime,
+          p_slot_period: parsed.data.slotPeriod,
+          p_reason_for_visit: parsed.data.reasonForVisit,
+        },
+      );
 
       if (rpcError) {
         const code = (rpcError as { code?: string }).code ?? "";
@@ -262,14 +340,30 @@ export default function BookPage() {
             "That time slot was just taken by someone else. Please go back and pick another time slot.",
           );
           setStep(2);
+        } else if (/already passed/i.test(message)) {
+          setConflict(
+            "That time has already passed today. Please pick a later slot, or choose another day.",
+          );
+          setStep(2);
+        } else if (/not open at that time of day/i.test(message)) {
+          setConflict("The doctor is not open at that time of day. Please pick another time.");
+          setStep(2);
+        } else if (/not accepting bookings/i.test(message)) {
+          setConflict("That doctor has stopped taking bookings. Please choose another doctor.");
+          setStep(1);
         } else {
           setFailure(
-            `We could not record that booking: ${message || "the booking service is unavailable"}. ${
-              usingMocks ? "No doctors table is available yet, so mock doctors cannot be booked." : ""
-            }`.trim(),
+            `We could not record that booking: ${message || "the booking service is unavailable"}.`,
           );
         }
         return;
+      }
+
+      // Plan 11.2: ask the server to print the simulated confirmation email.
+      // Best effort — the booking itself has already succeeded.
+      const appointmentId = (booked as { id?: string } | null)?.id;
+      if (appointmentId) {
+        void printBookingEmail(supabase, appointmentId);
       }
 
       router.push("/appointments?booked=1");
@@ -365,10 +459,31 @@ export default function BookPage() {
             </p>
           </div>
 
-          {usingMocks ? (
-            <p className="mb-space-xs text-body-lg text-on-surface-variant">
-              No live doctor list is available yet, so these sample doctors are shown.
-            </p>
+          {doctorsLoading ? (
+            <p className="mb-space-xs text-body-lg text-on-surface-variant">Loading doctors…</p>
+          ) : null}
+
+          {doctorsError ? (
+            <div
+              role="alert"
+              className="mb-space-sm flex items-center gap-space-xs rounded-lg border-2 border-tertiary bg-error-container px-space-sm py-space-xs text-body-lg text-on-error-container"
+            >
+              <Icon name="error" size={28} className="shrink-0" />
+              The doctor list could not be loaded: {doctorsError}
+            </div>
+          ) : null}
+
+          {!doctorsLoading && !doctorsError && doctors.length === 0 ? (
+            <div className="mb-space-sm rounded-xl border-2 border-outline-variant bg-white p-space-md">
+              <h2 className="flex items-center gap-2 text-headline-lg-mobile text-on-surface">
+                <Icon name="stethoscope" size={30} className="text-primary" />
+                No doctors are taking bookings
+              </h2>
+              <p className="mt-2 text-body-lg text-on-surface-variant">
+                Every doctor currently has their booking toggle switched off. Please check
+                back later.
+              </p>
+            </div>
           ) : null}
 
           <section aria-label="Available doctors" className="flex flex-col gap-space-sm">
@@ -392,10 +507,11 @@ export default function BookPage() {
                       <h2 className="truncate text-headline-lg-mobile text-on-surface">
                         {doctor.name}
                       </h2>
-                      <p className="text-body-lg text-on-surface-variant">{doctor.specialty}</p>
+                      <p className="text-body-lg text-on-surface-variant">                        {doctor.specialty}
+                      </p>
                       <span className="mt-1 inline-flex items-center gap-2 rounded-full bg-primary px-space-xs py-1 text-label-lg uppercase text-white">
                         <span className="inline-block h-3 w-3 rounded-full bg-white" aria-hidden="true" />
-                        {doctor.isMock ? "Sample" : "Available now"}
+                        Available now
                       </span>
                     </div>
 
@@ -485,19 +601,26 @@ export default function BookPage() {
             </div>
             <p className="mb-space-xs text-body-lg text-on-surface-variant">
               All times are West Africa Time (WAT).
+              {dateStr === today
+                ? " Times that have already passed today cannot be booked."
+                : ""}
             </p>
 
             <div role="radiogroup" aria-label="Time of day" className="grid grid-cols-2 gap-3">
               {TIME_SLOTS.map((slot) => {
                 const active = slotPeriod === slot.period;
+                const state = slotState(slot);
+                const blocked = state !== "open";
                 return (
                   <button
                     key={slot.period}
                     type="button"
                     role="radio"
                     aria-checked={active}
+                    aria-disabled={blocked}
+                    disabled={blocked}
                     onClick={() => setSlotPeriod(slot.period)}
-                    className={`relative flex min-h-36 flex-col items-start justify-between gap-2 rounded-xl p-4 press ${
+                    className={`relative flex min-h-36 flex-col items-start justify-between gap-2 rounded-xl p-4 press disabled:cursor-not-allowed disabled:opacity-60 ${
                       active
                         ? "bg-primary-container text-white shadow-tactile-sm"
                         : "bg-surface-container-low text-on-surface"
@@ -514,7 +637,11 @@ export default function BookPage() {
                       <span className="text-label-lg uppercase">{slot.label}</span>
                       <span className="text-headline-lg-mobile">{slot.time}</span>
                     </span>
-                    {active ? (
+                    {blocked ? (
+                      <span className="absolute top-3 right-3 rounded-full bg-surface-container-highest px-2 py-0.5 text-label-lg uppercase text-on-surface-variant">
+                        {state === "passed" ? "PASSED" : "CLOSED"}
+                      </span>
+                    ) : active ? (
                       <span className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white text-primary">
                         <Icon name="check" size={22} />
                       </span>
@@ -540,7 +667,7 @@ export default function BookPage() {
           <button
             type="button"
             onClick={() => goNext(2)}
-            disabled={!dateStr || !slotPeriod}
+            disabled={!dateStr || !slotPeriod || selectedSlotState !== "open"}
             className="mt-space-md flex min-h-16 w-full items-center justify-center gap-space-xs rounded-xl bg-primary text-label-xl text-white shadow-tactile press disabled:cursor-not-allowed disabled:opacity-50"
           >
             NEXT

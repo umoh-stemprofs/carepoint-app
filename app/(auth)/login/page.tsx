@@ -45,13 +45,16 @@ function toFriendlyMessage(code: string | undefined, fallback: string): string {
 function AuthPanel() {
   const searchParams = useSearchParams();
   const redirectRaw = searchParams.get("redirect");
+  const justReset = searchParams.get("reset") === "done";
 
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<Role>("patient");
   const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(
+    justReset ? "Password changed. Log in with your new password." : null,
+  );
   const [busy, setBusy] = useState(false);
 
   function defaultLanding(forRole: Role): string {
@@ -265,6 +268,16 @@ function AuthPanel() {
             className="min-h-16 w-full rounded-xl bg-surface-container-low px-4 text-body-xl text-on-surface placeholder:text-outline focus:bg-white"
           />
         </div>
+
+        {mode === "login" ? (
+          <Link
+            href="/forgot-password"
+            className="flex min-h-12 items-center gap-2 self-end text-label-lg text-secondary no-underline"
+          >
+            <Icon name="help_center" size={24} />
+            Forgot password?
+          </Link>
+        ) : null}
 
         {error ? (
           <p

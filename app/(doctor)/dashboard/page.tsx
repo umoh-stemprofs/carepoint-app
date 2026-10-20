@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 
 import Icon from "@/components/common/Icon";
 import Topbar from "@/components/common/Topbar";
+import VideoCallButton from "@/components/common/VideoCall";
 import AIDiagnosticDrawer from "@/components/doctor/AIDiagnosticDrawer";
+import PatientProfileModal from "@/components/doctor/PatientProfileModal";
+import ScheduleManager from "@/components/doctor/ScheduleManager";
 import { tryCreateSupabaseBrowserClient } from "@/lib/supabase/client";
 import { formatInWat, watDateOnly } from "@/lib/utils/datetime";
 
@@ -13,6 +16,7 @@ type Status = "pending" | "confirmed" | "completed" | "cancelled";
 
 type QueueItem = {
   id: string;
+  patientId: string;
   patientName: string;
   startTime: string;
   endTime: string;
@@ -24,6 +28,7 @@ type QueueItem = {
 
 type Row = {
   id: string;
+  patient_id: string;
   start_time: string;
   end_time: string;
   status: Status;
@@ -34,36 +39,13 @@ type Row = {
 };
 
 /**
- * Built on demand rather than at module scope: evaluating Date.now while
- * prerendering is rejected by Next.js.
+ * Status colours follow the design system's roles: green stays confirmed/go,
+ * red stays reserved for emergencies.
+ *  - confirmed -> primary
+ *  - pending   -> amber (the one non-token hue the Stitch samples use)
+ *  - completed -> secondary
+ *  - cancelled -> tertiary (validation red, not the emergency crimson)
  */
-function sampleQueue(): QueueItem[] {
-  const hour = 60 * 60 * 1000;
-  const day = 24 * hour;
-  return [
-    {
-      id: "sample-1",
-      patientName: "Sample patient",
-      startTime: new Date(Date.now() + hour).toISOString(),
-      endTime: new Date(Date.now() + 2 * hour).toISOString(),
-      status: "confirmed",
-      slotPeriod: "morning",
-      reasonForVisit: "Fever and chills for three days",
-      appointmentDate: new Date().toISOString().slice(0, 10),
-    },
-    {
-      id: "sample-2",
-      patientName: "Sample patient",
-      startTime: new Date(Date.now() + 26 * hour).toISOString(),
-      endTime: new Date(Date.now() + 27 * hour).toISOString(),
-      status: "pending",
-      slotPeriod: "morning",
-      reasonForVisit: "Follow-up after lab results",
-      appointmentDate: new Date(Date.now() + day).toISOString().slice(0, 10),
-    },
-  ];
-}
-
 const BADGE_CLASSES: Record<Status, string> = {
   confirmed: "bg-primary-fixed text-on-primary-fixed border-primary",
   pending: "bg-[#fef0c7] text-[#93370d] border-[#f79009]",
@@ -82,6 +64,7 @@ function mapRow(row: Row): QueueItem {
   const embedded = Array.isArray(row.patient) ? row.patient[0] : row.patient;
   return {
     id: row.id,
+    patientId: row.patient_id,
     patientName: embedded?.full_name || "Patient",
     startTime: row.start_time,
     endTime: row.end_time,
@@ -131,11 +114,13 @@ function QueueCard({
   isToday,
   busy,
   onAction,
+  onOpenRecord,
 }: {
   item: QueueItem;
   isToday: boolean;
   busy: boolean;
   onAction: (status: QueueAction) => void;
+  onOpenRecord: (item: QueueItem) => void;
 }) {
   const isFinished = item.status === "completed" || item.status === "cancelled";
 
@@ -193,6 +178,20 @@ function QueueCard({
           onClick={() => onAction("cancelled")}
         />
       </div>
+
+      <div className="mt-1 flex flex-wrap gap-space-xs">
+        <button
+          type="button"
+          onClick={() => onOpenRecord(item)}
+          className="flex min-h-14 items-center justify-center gap-2 rounded-lg border-2 border-secondary bg-white px-4 text-label-lg text-secondary press"
+        >
+          <Icon name="health_and_safety" size={24} />
+          Patient record
+        </button>
+        {item.status !== "cancelled" ? (
+          <VideoCallButton appointmentId={item.id} peerName={item.patientName} />
+        ) : null}
+      </div>
     </article>
   );
 }
@@ -200,7 +199,8 @@ function QueueCard({
 export default function DoctorDashboardPage() {
   const [items, setItems] = useState<QueueItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [usingSamples, setUsingSamples] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [recordItem, setRecordItem] = useState<QueueItem | null>(null);
   // Read in the effect, never during render: "current time" APIs are blocked
   // while prerendering this client component.
   const [today, setToday] = useState("");
@@ -221,9 +221,9 @@ export default function DoctorDashboardPage() {
         .select("id");
 
       if (error) throw new Error(error.message);
-      // A no-op update on sample rows must not silently claim success.
+      // A no-op update means the row disappeared while the list was open.
       if (!data || data.length === 0) {
-        throw new Error("That appointment is sample data and is not stored in the database.");
+        throw new Error("That appointment is no longer in the database. Reload the page.");
       }
 
       setItems((previous) =>
@@ -242,7 +242,7 @@ export default function DoctorDashboardPage() {
     let cancelled = false;
 
     async function load() {
-      // Established first so both the live and sample paths know today's date.
+      // Established first so the queue and the client agree on today's date.
       await Promise.resolve();
       if (cancelled) return;
       setToday(watDateOnly(new Date()));
@@ -254,27 +254,30 @@ export default function DoctorDashboardPage() {
           const { data, error } = await supabase
             .from("appointments")
             .select(
-              "id, appointment_date, start_time, end_time, status, slot_period, reason_for_visit, patient:profiles(full_name)",
+              "id, patient_id, appointment_date, start_time, end_time, status, slot_period, reason_for_visit, patient:profiles(full_name)",
             )
             .order("start_time", { ascending: true })
             .limit(50);
 
           if (!error && data && !cancelled) {
             setItems((data as unknown as Row[]).map(mapRow));
-            setUsingSamples(false);
             setLoading(false);
             return;
           }
-        } catch {
-          // Unreachable — fall through to the sample queue.
+          if (!cancelled && error) {
+            setLoadError(error.message);
+          }
+        } catch (error) {
+          if (!cancelled) {
+            setLoadError(error instanceof Error ? error.message : "the queue was unreachable");
+          }
         }
       }
 
       // Deferred so state is never written synchronously inside the effect.
       await Promise.resolve();
       if (cancelled) return;
-      setItems(sampleQueue());
-      setUsingSamples(true);
+      setItems([]);
       setLoading(false);
     }
 
@@ -301,15 +304,13 @@ export default function DoctorDashboardPage() {
         </p>
       </section>
 
-      {usingSamples ? (
+      {loadError ? (
         <div
-          role="status"
-          className="mb-space-sm flex items-start gap-space-xs rounded-lg border-2 border-[#dc6803] bg-[#fde6ca] px-space-sm py-space-xs text-body-lg text-[#7a2e05]"
+          role="alert"
+          className="mb-space-sm flex items-start gap-space-xs rounded-lg border-2 border-tertiary bg-error-container px-space-sm py-space-xs text-body-lg text-on-error-container"
         >
-          <Icon name="info" size={28} className="mt-0.5 shrink-0" />
-          <span>
-            Showing a sample queue — run the Phase 05 migration to load your real appointments.
-          </span>
+          <Icon name="error" size={28} className="mt-0.5 shrink-0" />
+          <span>Your queue could not be loaded: {loadError}</span>
         </div>
       ) : null}
 
@@ -323,7 +324,10 @@ export default function DoctorDashboardPage() {
         </div>
       ) : null}
 
-      {!loading && items.length === 0 ? (
+      {/* Plan 9.2: the doctor decides which parts of the day are open. */}
+      <ScheduleManager />
+
+      {!loading && !loadError && items.length === 0 ? (
         <div className="mt-space-md rounded-xl border-2 border-outline-variant bg-white p-space-md">
           <h2 className="flex items-center gap-2 text-headline-lg-mobile text-on-surface">
             <Icon name="event" size={30} className="text-primary" />
@@ -349,6 +353,7 @@ export default function DoctorDashboardPage() {
               isToday
               busy={busyId === item.id}
               onAction={(status) => void updateStatus(item.id, status)}
+              onOpenRecord={setRecordItem}
             />
           ))}
         </section>
@@ -367,12 +372,17 @@ export default function DoctorDashboardPage() {
               isToday={false}
               busy={busyId === item.id}
               onAction={(status) => void updateStatus(item.id, status)}
+              onOpenRecord={setRecordItem}
             />
           ))}
         </section>
       ) : null}
 
       <AIDiagnosticDrawer />
+
+      {recordItem ? (
+        <PatientProfileModal item={recordItem} onClose={() => setRecordItem(null)} />
+      ) : null}
 
       <p className="mt-space-lg text-body-lg">
         <Link href="/" className="text-primary">

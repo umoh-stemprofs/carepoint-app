@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import EmergencyBanner from "@/components/common/EmergencyBanner";
+import NotificationListener from "@/components/common/NotificationListener";
 import PrototypeNotice from "@/components/common/PrototypeNotice";
 
 import "./globals.css";
@@ -24,6 +25,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className="h-full antialiased">
       <body className="flex min-h-full flex-col">
         <div className="site-content">{children}</div>
+        {/* Plan 11.1: realtime appointment toasts on every screen. */}
+        <NotificationListener />
         {/* Rulebook Ethical Code: safety and honesty stay on every screen. */}
         <PrototypeNotice />
         <EmergencyBanner />

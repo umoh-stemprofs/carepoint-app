@@ -16,6 +16,10 @@
 # testing
 /coverage
 
+# live integration-test qa accounts (passwords, never commit)
+/.qa-credentials.json
+/e2e-artifacts/
+
 # next.js
 /.next/
 /out/

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 
 import Icon from "@/components/common/Icon";
 import SpeakButton from "@/components/common/SpeakButton";
@@ -13,6 +13,7 @@ import {
 } from "@/lib/validations/health-profile";
 
 type FormState = {
+  symptoms: string;
   medicalHistory: string;
   allergies: string;
   currentMedications: string;
@@ -21,6 +22,7 @@ type FormState = {
 };
 
 const EMPTY: FormState = {
+  symptoms: "",
   medicalHistory: "",
   allergies: "",
   currentMedications: "",
@@ -44,7 +46,15 @@ function safeFileName(name: string): string {
   return name.replace(/[/\\^%*?:"<>|\s]+/g, "_").slice(-80) || "record";
 }
 
+/** An entry of the patient's own storage folder (plan 8.4). */
+type StoredDocument = {
+  name: string;
+  size: number | null;
+  createdAt: string | null;
+};
+
 type Row = {
+  symptoms: string | null;
   medical_history: string | null;
   allergies: string | null;
   current_medications: string | null;
@@ -68,6 +78,7 @@ function writeLocalDraft(values: HealthProfileInput): void {
     window.localStorage.setItem(
       LOCAL_KEY,
       JSON.stringify({
+        symptoms: values.symptoms ?? "",
         medicalHistory: values.medicalHistory ?? "",
         allergies: values.allergies ?? "",
         currentMedications: values.currentMedications ?? "",
@@ -90,11 +101,108 @@ export default function HealthProfilePage() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
 
+  // Fields the patient has already edited. The record loads asynchronously;
+  // without this, a slow response would silently wipe whatever was typed in
+  // the meantime (the save then stored nulls while the form looked filled).
+  const dirtyFields = useRef<Set<keyof FormState>>(new Set());
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadIssue, setUploadIssue] = useState<string | null>(null);
   const [uploadNotice, setUploadNotice] = useState<string | null>(null);
+
+  // Plan 8.4: the uploaded papers themselves, previewed through signed URLs.
+  const [documents, setDocuments] = useState<StoredDocument[]>([]);
+  const [docsError, setDocsError] = useState<string | null>(null);
+  const [previewing, setPreviewing] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
+
+  const loadDocuments = useCallback(async (userId: string): Promise<void> => {
+    const supabase = tryCreateSupabaseBrowserClient();
+    if (!supabase) return;
+
+    try {
+      const { data, error } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .list(userId, { limit: 50, sortBy: { column: "created_at", order: "desc" } });
+      if (error) {
+        setDocsError(error.message);
+        return;
+      }
+      const entries = (data ?? []).filter(
+        (entry) =>
+          !entry.name.endsWith("/") &&
+          (entry.metadata as { mimetype?: string } | null | undefined)?.mimetype !== "folder",
+      );
+      setDocsError(null);
+      setDocuments(
+        entries.map((entry) => ({
+          name: entry.name,
+          size:
+            typeof (entry.metadata as { size?: number } | null)?.size === "number"
+              ? ((entry.metadata as { size?: number }).size as number)
+              : null,
+          createdAt: entry.created_at ?? null,
+        })),
+      );
+    } catch {
+      setDocsError("Your documents could not be listed right now.");
+    }
+  }, []);
+
+  /** Open a paper through a 15-minute signed link (plan D7 / 8.4). */
+  async function previewDocument(name: string): Promise<void> {
+    const supabase = tryCreateSupabaseBrowserClient();
+    if (!supabase) return;
+
+    setPreviewing(name);
+    setDocsError(null);
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("Please sign in again to open your documents.");
+
+      const { data, error } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .createSignedUrl(`${user.id}/${name}`, 15 * 60);
+      if (error) throw new Error(error.message);
+      window.open(data.signedUrl, "_blank", "noopener,noreferrer");
+    } catch (caught) {
+      setDocsError(
+        caught instanceof Error ? caught.message : "That document could not be opened.",
+      );
+    } finally {
+      setPreviewing(null);
+    }
+  }
+
+  /** Two taps: first marks the row for deletion, second performs it. */
+  async function deleteDocument(name: string): Promise<void> {
+    const supabase = tryCreateSupabaseBrowserClient();
+    if (!supabase) return;
+
+    setDocsError(null);
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("Please sign in again to manage your documents.");
+
+      const { error } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .remove([`${user.id}/${name}`]);
+      if (error) throw new Error(error.message);
+      setDocuments((previous) => previous.filter((document) => document.name !== name));
+    } catch (caught) {
+      setDocsError(
+        caught instanceof Error ? caught.message : "That document could not be deleted.",
+      );
+    } finally {
+      setPendingDelete(null);
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -109,6 +217,9 @@ export default function HealthProfilePage() {
           } = await supabase.auth.getUser();
 
           if (user) {
+            // Plan 8.4: the papers live under the same account, load with them.
+            void loadDocuments(user.id);
+
             const { data, error } = await supabase
               .from("health_profiles")
               .select("*")
@@ -117,7 +228,8 @@ export default function HealthProfilePage() {
 
             if (!error && data && !cancelled) {
               const row = data as Row;
-              setValues({
+              applyLoaded({
+                symptoms: row.symptoms ?? "",
                 medicalHistory: row.medical_history ?? "",
                 allergies: row.allergies ?? "",
                 currentMedications: row.current_medications ?? "",
@@ -138,7 +250,7 @@ export default function HealthProfilePage() {
       if (cancelled) return;
 
       const draft = readLocalDraft();
-      if (draft) setValues(draft);
+      if (draft) applyLoaded(draft);
       setLoading(false);
     }
 
@@ -146,11 +258,23 @@ export default function HealthProfilePage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [loadDocuments]);
 
   function update(key: keyof FormState, value: string) {
+    dirtyFields.current.add(key);
     setValues((previous) => ({ ...previous, [key]: value }));
     setNotice(null);
+  }
+
+  /** Merge record/draft values in, never touching fields already edited. */
+  function applyLoaded(next: FormState): void {
+    setValues((current) => {
+      const merged = { ...current };
+      (Object.keys(next) as Array<keyof FormState>).forEach((key) => {
+        if (!dirtyFields.current.has(key)) merged[key] = next[key];
+      });
+      return merged;
+    });
   }
 
   async function handleSave(event: FormEvent<HTMLFormElement>) {
@@ -158,6 +282,7 @@ export default function HealthProfilePage() {
     setNotice(null);
 
     const payload: HealthProfileInput = {
+      symptoms: values.symptoms.trim() || undefined,
       medicalHistory: values.medicalHistory.trim() || undefined,
       allergies: values.allergies.trim() || undefined,
       currentMedications: values.currentMedications.trim() || undefined,
@@ -184,6 +309,7 @@ export default function HealthProfilePage() {
           const { error } = await supabase.from("health_profiles").upsert(
             {
               patient_id: user.id,
+              symptoms: parsed.data.symptoms ?? null,
               medical_history: parsed.data.medicalHistory ?? null,
               allergies: parsed.data.allergies ?? null,
               current_medications: parsed.data.currentMedications ?? null,
@@ -249,6 +375,7 @@ export default function HealthProfilePage() {
       setUploadNotice(`Uploaded ${pendingFile.name} to your record.`);
       setPendingFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
+      void loadDocuments(user.id);
     } catch (error) {
       setUploadIssue(
         error instanceof Error ? error.message : "The file could not be uploaded.",
@@ -301,6 +428,24 @@ export default function HealthProfilePage() {
           </div>
 
           <div className="flex flex-col gap-space-xs rounded-xl bg-surface-container-low p-space-md">
+            <label htmlFor="symptoms" className="flex items-center gap-2 text-label-lg text-on-surface">
+              <Icon name="sick" size={24} className="text-primary" />
+              What is wrong with you today?
+            </label>
+            <textarea
+              id="symptoms"
+              rows={3}
+              value={values.symptoms}
+              onChange={(event) => update("symptoms", event.target.value)}
+              placeholder="For example: fever and headache since Tuesday, stomach pain at night"
+              aria-describedby="symptoms-help"
+              className={`${fieldClass} min-h-24 resize-y`}
+            />
+            <p id="symptoms-help" className="text-body-lg text-on-surface-variant">
+              Tell the doctor what you are feeling before you book. Between 3 and 2000
+              characters, and you can leave it empty.
+            </p>
+
             <label htmlFor="medicalHistory" className="flex items-center gap-2 text-label-lg text-on-surface">
               <Icon name="record_voice_over" size={24} className="text-primary" />
               Medical history
@@ -514,6 +659,99 @@ export default function HealthProfilePage() {
             {uploading ? "UPLOADING…" : "UPLOAD DOCUMENT"}
           </button>
         </form>
+
+        {/* Plan 8.4: the documents themselves, opened through signed URLs. */}
+        <div className="mt-space-sm flex flex-col gap-space-xs">
+          <div className="flex items-center justify-between gap-space-xs">
+            <h3 className="flex items-center gap-2 text-headline-lg-mobile text-on-surface">
+              <Icon name="description" size={26} className="text-secondary" />
+              Your papers
+            </h3>
+            <span className="text-label-lg text-on-surface-variant">
+              {documents.length} on file
+            </span>
+          </div>
+
+          {docsError ? (
+            <p
+              role="alert"
+              className="flex items-start gap-2 rounded-lg border-2 border-tertiary bg-error-container px-space-sm py-space-xs text-body-lg text-on-error-container"
+            >
+              <Icon name="error" size={28} className="mt-0.5 shrink-0" />
+              {docsError}
+            </p>
+          ) : null}
+
+          {documents.length === 0 ? (
+            <p className="m-0 rounded-xl bg-surface-container-low p-space-xs text-body-lg text-on-surface-variant">
+              Nothing uploaded yet. Papers you upload appear here and can be opened any time.
+            </p>
+          ) : (
+            <ul className="m-0 flex list-none flex-col gap-space-xs p-0">
+              {documents.map((document) => (
+                <li
+                  key={document.name}
+                  className="flex items-center justify-between gap-space-xs rounded-xl bg-surface-container-low p-space-xs"
+                >
+                  <span className="flex min-w-0 items-center gap-space-xs">
+                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-secondary-fixed text-on-secondary-fixed">
+                      <Icon
+                        name={
+                          document.name.toLowerCase().endsWith(".pdf")
+                            ? "picture_as_pdf"
+                            : "image"
+                        }
+                        size={30}
+                      />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-label-lg text-on-surface">
+                        {document.name}
+                      </span>
+                      <span className="block text-body-lg text-on-surface-variant">
+                        {document.size === null ? "size unknown" : formatMegabytes(document.size)}
+                        {document.createdAt
+                          ? ` · ${new Date(document.createdAt).toLocaleDateString("en-GB")}`
+                          : ""}
+                      </span>
+                    </span>
+                  </span>
+
+                  <span className="flex shrink-0 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => void previewDocument(document.name)}
+                      disabled={previewing !== null}
+                      className="flex min-h-14 items-center gap-2 rounded-lg bg-secondary px-4 text-label-lg text-white press disabled:opacity-60"
+                    >
+                      <Icon name="visibility" size={24} />
+                      {previewing === document.name ? "OPENING…" : "OPEN"}
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={
+                        pendingDelete === document.name
+                          ? `Confirm deleting ${document.name}`
+                          : `Delete ${document.name}`
+                      }
+                      onClick={() => {
+                        if (pendingDelete === document.name) void deleteDocument(document.name);
+                        else setPendingDelete(document.name);
+                      }}
+                      className={`flex min-h-14 min-w-14 items-center justify-center rounded-lg press ${
+                        pendingDelete === document.name
+                          ? "bg-tertiary text-white"
+                          : "bg-surface-container-highest text-tertiary"
+                      }`}
+                    >
+                      <Icon name="delete" size={26} />
+                    </button>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </section>
 
       <p className="mt-space-lg text-body-lg">

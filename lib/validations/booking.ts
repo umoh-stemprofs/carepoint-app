@@ -33,6 +33,12 @@ export const bookingSchema = z
       message: "startTime must fall on appointmentDate",
       path: ["startTime"],
     },
-  );
+  )
+  // A slot that has already gone by cannot be taken — at 1 PM there is no
+  // 9 AM appointment left today. The booking RPC re-checks this server-side.
+  .refine((value) => new Date(value.startTime).getTime() > Date.now(), {
+    message: "startTime has already passed — pick a later time",
+    path: ["startTime"],
+  });
 
 export type BookingInput = z.infer<typeof bookingSchema>;

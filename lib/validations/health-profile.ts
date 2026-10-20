@@ -12,6 +12,12 @@ const nigerianPhone = z
  * confidential bodies happens at the persistence layer (plan decision D3).
  */
 export const healthProfileSchema = z.object({
+  symptoms: z
+    .string()
+    .trim()
+    .min(3, "symptoms must be at least 3 characters, or left empty")
+    .max(2000, "symptoms is too long")
+    .optional(),
   medicalHistory: z.string().trim().max(5000, "medicalHistory is too long").optional(),
   allergies: z.string().trim().max(2000, "allergies is too long").optional(),
   currentMedications: z.string().trim().max(2000, "currentMedications is too long").optional(),

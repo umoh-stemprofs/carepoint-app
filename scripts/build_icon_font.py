@@ -41,8 +41,24 @@ OUTPUT_FONT = ROOT / "public" / "fonts" / "material-symbols-outlined.ttf"
 OUTPUT_MAP = ROOT / "lib" / "icon-codepoints.ts"
 SCAN_DIRS = ("app", "components")
 
-IMPORT_RE = __import__("re").compile(
-    r"<Icon\b[^>]*?\bname=\{?\"([a-z0-9_]+)\"?\}?", __import__("re").DOTALL
+# A name reaches <Icon> three ways, and all three must be collected:
+#   <Icon name="schedule"> / <Icon name={cond ? "a" : "b"}>   literal + ternary
+#   <Icon name={slot.icon}>                                      a field/prop,
+#     resolved through  icon: "..."  and  icon="..."  definitions
+#   <Icon name={STATUS_ICONS[row]}>                              an *ICONS map
+#     resolved through the whole const ...ICONS... = { ... } block
+# The tag body is scanned for quoted tokens that sit in *value* position —
+# after `name=`, or after `?` / `:` / `||` / `&&` of a ternary — so neither a
+# className like "mt-1 shrink-0" nor a comparison like `phase === "connected"`
+# can ever be mistaken for a glyph.
+TAG_RE = __import__("re").compile(r"<Icon\b(.*?)>", __import__("re").DOTALL)
+TAG_TOKEN_RE = __import__("re").compile(r'(?:\bname=\{?|[\?:]|\|\||&&)\s*"([a-z0-9_]+)"')
+TOKEN_RE = __import__("re").compile(r'"([a-z0-9_]+)"')
+FIELD_ICON_RE = __import__("re").compile(r'\bicon:\s*"([a-z0-9_]+)"')
+ICON_ATTR_RE = __import__("re").compile(r'\bicon=\{?"([a-z0-9_]+)"?\}?')
+ICON_CONST_RE = __import__("re").compile(
+    r"(?:const|let|var)\s+\w*ICONS?\w*\s*(?::[^=]+)?=\s*[\[{](.*?)[\]}]",
+    __import__("re").DOTALL,
 )
 
 
@@ -62,7 +78,17 @@ def icons_in_source() -> dict[str, list[str]]:
     found: dict[str, list[str]] = {}
     for directory in SCAN_DIRS:
         for path in sorted((ROOT / directory).rglob("*.tsx")):
-            for name in IMPORT_RE.findall(path.read_text(encoding="utf-8")):
+            text = path.read_text(encoding="utf-8")
+
+            names: set[str] = set()
+            for body in TAG_RE.findall(text):
+                names.update(TAG_TOKEN_RE.findall(body))
+            names.update(FIELD_ICON_RE.findall(text))
+            names.update(ICON_ATTR_RE.findall(text))
+            for block in ICON_CONST_RE.findall(text):
+                names.update(TOKEN_RE.findall(block))
+
+            for name in sorted(names):
                 found.setdefault(name, []).append(str(path.relative_to(ROOT)))
     return found
 

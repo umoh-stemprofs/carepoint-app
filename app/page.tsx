@@ -94,16 +94,8 @@ export default function Home() {
         No reading required. Doctors talk with you directly.
       </p>
 
-      <section className="next-steps">
-        <h2 className="text-headline-lg-mobile">
-          <span className="anchor-target" id="how-it-works" />
-          Built for low-bandwidth connections and first-time smartphone users.
-        </h2>
-        <p>
-          CarePoint keeps every step visual and readable: giant buttons, plain language, and
-          a persistent emergency shortcut to 112 on every screen.
-        </p>
-      </section>
+      
+      
     </main>
   );
 }
