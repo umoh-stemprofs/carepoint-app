@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import Icon from "@/components/common/Icon";
+import SpeakButton from "@/components/common/SpeakButton";
 import Topbar from "@/components/common/Topbar";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { bookingSchema, type BookingInput } from "@/lib/validations/booking";
@@ -41,24 +43,15 @@ const MOCK_DOCTORS: DoctorOption[] = [
 ];
 
 /** Fixed WAT wall-clock slots (plan Phase 07, Step 2). */
-const TIME_SLOTS: Array<{ period: SlotPeriod; time: string; label: string }> = [
-  { period: "morning", time: "09:00", label: "MORNING" },
-  { period: "midday", time: "12:00", label: "MIDDAY" },
-  { period: "afternoon", time: "15:00", label: "AFTERNOON" },
-  { period: "evening", time: "17:00", label: "EVENING" },
+const TIME_SLOTS: Array<{ period: SlotPeriod; time: string; label: string; icon: string }> = [
+  { period: "morning", time: "09:00", label: "MORNING", icon: "wb_sunny" },
+  { period: "midday", time: "12:00", label: "MIDDAY", icon: "light_mode" },
+  { period: "afternoon", time: "15:00", label: "AFTERNOON", icon: "wb_twilight" },
+  { period: "evening", time: "17:00", label: "EVENING", icon: "dark_mode" },
 ];
 
 const DAY_LABELS = ["TODAY", "TOMORROW", "NEXT DAY"] as const;
-
-const bannerBase: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  padding: "16px 18px",
-  borderRadius: 8,
-  fontSize: 18,
-  lineHeight: 1.45,
-  marginTop: 22,
-};
+const DAY_ICONS = ["wb_sunny", "partly_cloudy_day", "event"] as const;
 
 export default function BookPage() {
   const router = useRouter();
@@ -241,78 +234,55 @@ export default function BookPage() {
     }
   }
 
-  const tileStyle = (active: boolean, primary: boolean): React.CSSProperties => ({
-    minHeight: 96,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    gap: 6,
-    padding: "18px 20px",
-    borderRadius: 8,
-    border: active ? "4px solid var(--foreground)" : "2px solid var(--line)",
-    background: active ? (primary ? "var(--green)" : "var(--blue)") : "#fff",
-    color: active ? "#fff" : "var(--foreground)",
-    textAlign: "left",
-    cursor: "pointer",
-    fontSize: 17,
-    fontWeight: 700,
-  });
-
-  const primaryButton: React.CSSProperties = {
-    width: "100%",
-    minHeight: 64,
-    marginTop: 24,
-    fontSize: 20,
-    fontWeight: 750,
-    borderRadius: 8,
-    border: "none",
-    background: "var(--green)",
-    color: "#fff",
-    cursor: busy ? "wait" : "pointer",
-    opacity: busy ? 0.7 : 1,
-  };
-
-  const secondaryButton: React.CSSProperties = {
-    minHeight: 60,
-    marginTop: 24,
-    fontSize: 18,
-    fontWeight: 700,
-    borderRadius: 8,
-    border: "2px solid var(--line)",
-    background: "#fff",
-    color: "var(--foreground)",
-    cursor: "pointer",
-    width: "100%",
-  };
+  const stepTitle =
+    step === 1
+      ? "Choose your doctor"
+      : step === 2
+        ? "Pick a day and time"
+        : step === 3
+          ? "Why are you visiting?"
+          : "Check and confirm";
 
   return (
     <main className="home-page">
       <Topbar label="BOOK A DOCTOR" />
 
-      <section className="welcome" style={{ paddingBottom: 24 }}>
-        <p className="eyebrow">STEP {step} OF 4</p>
-        <h1>
-          {step === 1 && "Choose your doctor"}
-          {step === 2 && "Pick a day and time"}
-          {step === 3 && "Why are you visiting?"}
-          {step === 4 && "Check and confirm"}
-        </h1>
+      <header className="flex flex-wrap items-center justify-between gap-space-sm py-space-sm">
+        {step > 1 ? (
+          <button
+            type="button"
+            onClick={() => goBack(step)}
+            className="flex min-h-16 items-center gap-space-xs rounded-lg bg-surface-container-high px-space-sm text-on-surface press"
+          >
+            <Icon name="arrow_back" size={28} />
+            <span className="text-label-lg uppercase">Back</span>
+          </button>
+        ) : (
+          <Link
+            href="/"
+            className="flex min-h-16 items-center gap-space-xs rounded-lg bg-surface-container-high px-space-sm text-on-surface no-underline press"
+          >
+            <Icon name="arrow_back" size={28} />
+            <span className="text-label-lg uppercase">Home</span>
+          </Link>
+        )}
+
+        <span className="rounded-full bg-surface-container-high px-space-sm py-1.5 text-label-lg text-primary">
+          STEP {step} OF 4
+        </span>
+      </header>
+
+      <section className="pb-space-md">
+        <h1 className="text-headline-lg-mobile sm:text-headline-lg">{stepTitle}</h1>
       </section>
 
+      {/* Status banners: same conditions and copy as before, new skin. */}
       {conflict ? (
         <div
           role="alert"
-          style={{
-            ...bannerBase,
-            background: "#fde6ca",
-            border: "3px solid #dc6803",
-            color: "#7a2e05",
-            fontWeight: 700,
-          }}
+          className="mb-space-sm flex items-center gap-space-xs rounded-lg border-2 border-[#dc6803] bg-[#fde6ca] px-space-sm py-space-xs text-body-lg font-bold text-[#7a2e05]"
         >
-          <span aria-hidden="true" style={{ fontSize: 26, marginRight: 12 }}>
-            ⚠
-          </span>
+          <Icon name="warning" size={28} className="shrink-0" />
           {conflict}
         </div>
       ) : null}
@@ -320,15 +290,19 @@ export default function BookPage() {
       {failure ? (
         <div
           role="alert"
-          style={{ ...bannerBase, background: "#fee4e2", border: "2px solid var(--red)", color: "#7a271a" }}
+          className="mb-space-sm flex items-center gap-space-xs rounded-lg border-2 border-tertiary bg-error-container px-space-sm py-space-xs text-body-lg text-on-error-container"
         >
+          <Icon name="error" size={28} className="shrink-0" />
           {failure}
         </div>
       ) : null}
 
       {issues.length > 0 ? (
-        <div role="alert" style={{ ...bannerBase, background: "#fee4e2", border: "2px solid var(--red)" }}>
-          <ul style={{ margin: 0, paddingLeft: 20 }}>
+        <div
+          role="alert"
+          className="mb-space-sm rounded-lg border-2 border-tertiary bg-error-container px-space-sm py-space-xs text-body-lg text-on-error-container"
+        >
+          <ul className="m-0 list-disc pl-6">
             {issues.map((issue) => (
               <li key={issue}>{issue}</li>
             ))}
@@ -338,87 +312,193 @@ export default function BookPage() {
 
       {step === 1 ? (
         <>
+          <div className="mb-space-sm flex items-center gap-space-xs rounded-lg bg-surface-container-low p-space-xs">
+            <Icon name="touch_app" size={30} className="text-primary" />
+            <p className="text-body-lg text-on-surface-variant">
+              Tap a doctor card to begin your visit
+            </p>
+          </div>
+
           {usingMocks ? (
-            <p className="welcome-copy" style={{ fontSize: 16 }}>
+            <p className="mb-space-xs text-body-lg text-on-surface-variant">
               No live doctor list is available yet, so these sample doctors are shown.
             </p>
           ) : null}
-          <section className="action-grid" aria-label="Available doctors" style={{ marginTop: 18 }}>
-            {doctors.map((doctor, index) => (
-              <button
-                key={doctor.id}
-                type="button"
-                onClick={() => setDoctorId(doctor.id)}
-                aria-pressed={doctorId === doctor.id}
-                style={tileStyle(doctorId === doctor.id, true)}
-              >
-                <span style={{ fontSize: 13, opacity: 0.85 }}>
-                  {String(index + 1).padStart(2, "0")} / AVAILABLE
-                </span>
-                <span style={{ fontSize: 24, fontWeight: 740 }}>{doctor.name}</span>
-                <span style={{ fontSize: 16, fontWeight: 500 }}>{doctor.specialty}</span>
-              </button>
-            ))}
+
+          <section aria-label="Available doctors" className="flex flex-col gap-space-sm">
+            {doctors.map((doctor) => {
+              const selected = doctorId === doctor.id;
+              return (
+                <article
+                  key={doctor.id}
+                  className={`flex flex-col gap-space-xs rounded-xl border-2 p-space-sm ${
+                    selected
+                      ? "border-primary bg-primary-fixed"
+                      : "border-outline-variant bg-white"
+                  }`}
+                >
+                  <div className="flex items-center gap-space-sm">
+                    <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-surface-container-high text-primary">
+                      <Icon name="person" size={44} />
+                    </span>
+
+                    <div className="min-w-0 flex-1">
+                      <h2 className="truncate text-headline-lg-mobile text-on-surface">
+                        {doctor.name}
+                      </h2>
+                      <p className="text-body-lg text-on-surface-variant">{doctor.specialty}</p>
+                      <span className="mt-1 inline-flex items-center gap-2 rounded-full bg-primary px-space-xs py-1 text-label-lg uppercase text-white">
+                        <span className="inline-block h-3 w-3 rounded-full bg-white" aria-hidden="true" />
+                        {doctor.isMock ? "Sample" : "Available now"}
+                      </span>
+                    </div>
+
+                    <SpeakButton
+                      phrase={`${doctor.name}, ${doctor.specialty}. Tap select to choose this doctor.`}
+                      label={`Listen to ${doctor.name} introduction`}
+                      className="bg-surface-container-high text-on-surface"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setDoctorId(doctor.id)}
+                    aria-pressed={selected}
+                    className={`flex min-h-16 w-full items-center justify-center gap-3 rounded-xl text-label-xl text-white press ${
+                      selected ? "bg-primary shadow-tactile-sm" : "bg-primary-container"
+                    }`}
+                  >
+                    <Icon name={selected ? "done_all" : "check_circle"} size={36} />
+                    {selected ? "SELECTED" : "SELECT"}
+                  </button>
+                </article>
+              );
+            })}
           </section>
+
           <button
             type="button"
             onClick={() => goNext(1)}
             disabled={!doctorId}
-            style={{ ...primaryButton, opacity: doctorId && !busy ? 1 : 0.5 }}
+            className="mt-space-md flex min-h-16 w-full items-center justify-center gap-space-xs rounded-xl bg-primary text-label-xl text-white shadow-tactile press disabled:cursor-not-allowed disabled:opacity-50"
           >
             NEXT
+            <Icon name="arrow_forward" size={30} />
           </button>
         </>
       ) : null}
 
       {step === 2 ? (
         <>
-          <section aria-label="Choose a day" style={{ display: "grid", gap: 12 }}>
-            {days.map((day) => (
-              <button
-                key={day.date}
-                type="button"
-                onClick={() => setDateStr(day.date)}
-                aria-pressed={dateStr === day.date}
-                style={tileStyle(dateStr === day.date, false)}
-              >
-                <span style={{ fontSize: 22 }}>{day.label}</span>
-                <span style={{ fontSize: 16, fontWeight: 500 }}>
-                  {formatInWat(day.date, "EEEE d MMMM yyyy")}
-                </span>
-              </button>
-            ))}
+          <section aria-label="Choose a day">
+            <div className="mb-space-xs flex items-center gap-2">
+              <Icon name="calendar_month" size={30} className="text-secondary" />
+              <h2 className="text-headline-lg-mobile text-on-surface">Choose day</h2>
+            </div>
+
+            <div role="radiogroup" aria-label="Consultation day" className="grid grid-cols-3 gap-3">
+              {days.map((day, index) => {
+                const active = dateStr === day.date;
+                return (
+                  <button
+                    key={day.date}
+                    type="button"
+                    role="radio"
+                    aria-checked={active}
+                    onClick={() => setDateStr(day.date)}
+                    className={`flex min-h-24 flex-col items-center justify-center gap-2 rounded-xl p-3 press ${
+                      active
+                        ? "bg-secondary text-white shadow-tactile-sm"
+                        : "bg-surface-container-high text-on-surface"
+                    }`}
+                  >
+                    <Icon name={DAY_ICONS[index] ?? "event"} size={36} />
+                    <span className="text-label-lg uppercase">{day.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {days.length > 0 ? (
+              <p className="mt-space-xs text-body-lg text-on-surface-variant">
+                {dateStr
+                  ? formatInWat(dateStr, "EEEE d MMMM yyyy")
+                  : "Pick today, tomorrow or the next day."}
+              </p>
+            ) : null}
           </section>
 
-          <h2 style={{ fontSize: 22, marginTop: 30 }}>Pick a time (West Africa Time)</h2>
-          <section
-            aria-label="Choose a time"
-            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12 }}
-          >
-            {TIME_SLOTS.map((slot) => (
-              <button
-                key={slot.period}
-                type="button"
-                onClick={() => setSlotPeriod(slot.period)}
-                aria-pressed={slotPeriod === slot.period}
-                style={tileStyle(slotPeriod === slot.period, true)}
-              >
-                <span style={{ fontSize: 20 }}>{slot.label}</span>
-                <span style={{ fontSize: 16, fontWeight: 500 }}>{slot.time} WAT</span>
-              </button>
-            ))}
+          <section aria-label="Choose a time" className="mt-space-lg">
+            <div className="mb-space-xs flex items-center justify-between gap-space-xs">
+              <h2 className="text-headline-lg-mobile text-on-surface">Pick time</h2>
+              <SpeakButton
+                phrase="Pick a time. Morning at 9, midday at 12, afternoon at 3, or evening at 5, West Africa Time."
+                label="Listen to the time options"
+                className="bg-secondary text-white"
+              />
+            </div>
+            <p className="mb-space-xs text-body-lg text-on-surface-variant">
+              All times are West Africa Time (WAT).
+            </p>
+
+            <div role="radiogroup" aria-label="Time of day" className="grid grid-cols-2 gap-3">
+              {TIME_SLOTS.map((slot) => {
+                const active = slotPeriod === slot.period;
+                return (
+                  <button
+                    key={slot.period}
+                    type="button"
+                    role="radio"
+                    aria-checked={active}
+                    onClick={() => setSlotPeriod(slot.period)}
+                    className={`relative flex min-h-36 flex-col items-start justify-between gap-2 rounded-xl p-4 press ${
+                      active
+                        ? "bg-primary-container text-white shadow-tactile-sm"
+                        : "bg-surface-container-low text-on-surface"
+                    }`}
+                  >
+                    <span
+                      className={`flex h-11 w-11 items-center justify-center rounded-lg ${
+                        active ? "bg-primary text-white" : "bg-surface-container-high text-primary"
+                      }`}
+                    >
+                      <Icon name={slot.icon} size={28} />
+                    </span>
+                    <span className="flex flex-col text-left">
+                      <span className="text-label-lg uppercase">{slot.label}</span>
+                      <span className="text-headline-lg-mobile">{slot.time}</span>
+                    </span>
+                    {active ? (
+                      <span className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white text-primary">
+                        <Icon name="check" size={22} />
+                      </span>
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
           </section>
+
+          <div className="mt-space-sm flex items-center gap-space-xs rounded-xl bg-surface-container-high p-space-xs">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-white text-primary">
+              <Icon name="video_call" size={32} />
+            </span>
+            <span className="flex flex-col">
+              <span className="text-label-lg text-on-surface">Doctor video call</span>
+              <span className="text-body-lg text-on-surface-variant">
+                Booked for West Africa Time
+              </span>
+            </span>
+          </div>
 
           <button
             type="button"
             onClick={() => goNext(2)}
             disabled={!dateStr || !slotPeriod}
-            style={{ ...primaryButton, opacity: dateStr && slotPeriod ? 1 : 0.5 }}
+            className="mt-space-md flex min-h-16 w-full items-center justify-center gap-space-xs rounded-xl bg-primary text-label-xl text-white shadow-tactile press disabled:cursor-not-allowed disabled:opacity-50"
           >
             NEXT
-          </button>
-          <button type="button" onClick={() => goBack(2)} style={secondaryButton}>
-            BACK
+            <Icon name="arrow_forward" size={30} />
           </button>
         </>
       ) : null}
@@ -427,8 +507,9 @@ export default function BookPage() {
         <>
           <label
             htmlFor="reason"
-            style={{ display: "block", fontSize: 17, fontWeight: 700, marginBottom: 8 }}
+            className="mb-2 flex items-center gap-2 text-label-lg text-on-surface"
           >
+            <Icon name="description" size={26} className="text-primary" />
             Reason for visit
           </label>
           <textarea
@@ -437,20 +518,9 @@ export default function BookPage() {
             value={reason}
             onChange={(event) => setReason(event.target.value)}
             placeholder="Describe your symptoms, for example: fever and headache for three days"
-            style={{
-              width: "100%",
-              fontSize: 19,
-              padding: 14,
-              border: "2px solid var(--line)",
-              borderRadius: 8,
-              background: "#fff",
-              color: "var(--foreground)",
-              resize: "vertical",
-            }}
+            className="min-h-40 w-full resize-y rounded-xl bg-surface-container-low p-4 text-body-xl text-on-surface placeholder:text-outline focus:bg-white"
           />
-          <p style={{ fontSize: 15, color: "#435249", marginTop: 8 }}>
-            Between 3 and 1000 characters.
-          </p>
+          <p className="mt-2 text-body-lg text-on-surface-variant">Between 3 and 1000 characters.</p>
 
           <button
             type="button"
@@ -468,66 +538,51 @@ export default function BookPage() {
               setIssues([]);
               goNext(3);
             }}
-            style={{ ...primaryButton, opacity: busy ? 0.6 : 1 }}
+            className="mt-space-md flex min-h-16 w-full items-center justify-center gap-space-xs rounded-xl bg-primary text-label-xl text-white shadow-tactile press"
           >
             REVIEW BOOKING
-          </button>
-          <button type="button" onClick={() => goBack(3)} style={secondaryButton}>
-            BACK
+            <Icon name="arrow_forward" size={30} />
           </button>
         </>
       ) : null}
 
       {step === 4 ? (
         <>
-          <div
-            style={{
-              border: "3px solid var(--line)",
-              borderRadius: 10,
-              padding: 22,
-              background: "#fff",
-              display: "grid",
-              gap: 14,
-            }}
-          >
+          <div className="flex flex-col gap-space-xs rounded-xl border-2 border-outline-variant bg-white p-space-md">
             {[
               ["Doctor", selectedDoctor?.name ?? "—"],
               ["Day", days.find((day) => day.date === dateStr)?.label ?? "—"],
-              [
-                "Date",
-                dateStr ? formatInWat(dateStr, "EEEE d MMMM yyyy") : "—",
-              ],
+              ["Date", dateStr ? formatInWat(dateStr, "EEEE d MMMM yyyy") : "—"],
               ["Time", selectedSlot ? `${selectedSlot.time} WAT` : "—"],
               ["Reason", reason.trim() || "—"],
             ].map(([label, value]) => (
-              <div key={label} style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
-                <span style={{ fontSize: 16, fontWeight: 700, color: "#435249" }}>{label}</span>
-                <span style={{ fontSize: 17, textAlign: "right" }}>{value}</span>
+              <div key={label} className="flex justify-between gap-4 border-b border-surface-container-high pb-space-xs last:border-0">
+                <span className="text-label-lg text-on-surface-variant">{label}</span>
+                <span className="text-body-lg text-right text-on-surface">{value}</span>
               </div>
             ))}
           </div>
 
-          <p style={{ fontSize: 15, color: "#435249", marginTop: 14 }}>
-            Times are shown in West Africa Time (WAT). Your slot is only held once the booking
-            is confirmed.
+          <p className="mt-space-sm text-body-lg text-on-surface-variant">
+            Your slot is only held once the booking is confirmed.
           </p>
 
           <button
             type="button"
             onClick={submitBooking}
             disabled={busy}
-            style={{ ...primaryButton, opacity: busy ? 0.7 : 1 }}
+            className="mt-space-md flex min-h-18 w-full items-center justify-center gap-space-xs rounded-xl bg-primary-container text-label-xl text-white shadow-tactile press disabled:cursor-wait disabled:opacity-70"
           >
+            <Icon name="calendar_check" size={36} />
             {busy ? "BOOKING…" : "CONFIRM & BOOK"}
-          </button>
-          <button type="button" onClick={() => goBack(4)} disabled={busy} style={secondaryButton}>
-            BACK
           </button>
         </>
       ) : null}
 
-      <p className="welcome-copy" style={{ marginTop: 32, fontSize: 16 }}>
-        <Link href="/">← Back to home</Link>
+      <p className="mt-space-lg text-body-lg">
+        <Link href="/" className="text-primary">
+          ← Back to home
+        </Link>
       </p>
     </main>
   );

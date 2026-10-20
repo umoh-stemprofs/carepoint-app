@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import Icon from "@/components/common/Icon";
+import SpeakButton from "@/components/common/SpeakButton";
 import { tryCreateSupabaseBrowserClient } from "@/lib/supabase/client";
 import { formatInWat } from "@/lib/utils/datetime";
 
@@ -66,11 +68,26 @@ function sampleAppointments(): AppointmentView[] {
   ];
 }
 
-const BADGE_STYLES: Record<Status, React.CSSProperties> = {
-  confirmed: { background: "#dcfae6", border: "2px solid #12b76a", color: "#05603a" },
-  pending: { background: "#fef0c7", border: "2px solid #f79009", color: "#93370d" },
-  completed: { background: "#e0e7ff", border: "2px solid #6172f3", color: "#3538cd" },
-  cancelled: { background: "#fee4e2", border: "2px solid #f04438", color: "#7a271a" },
+/**
+ * Status colours come from the design system's own roles, so green keeps its
+ * single meaning (confirmed / go) and red stays reserved for emergencies:
+ *  - confirmed -> primary
+ *  - pending   -> amber (the one non-token hue the Stitch samples use)
+ *  - completed -> secondary
+ *  - cancelled -> tertiary (validation red, not the emergency crimson)
+ */
+const BADGE_CLASSES: Record<Status, string> = {
+  confirmed: "bg-primary-fixed text-on-primary-fixed border-primary",
+  pending: "bg-[#fef0c7] text-[#93370d] border-[#f79009]",
+  completed: "bg-secondary-fixed text-on-secondary-fixed border-secondary",
+  cancelled: "bg-tertiary-fixed text-on-tertiary-fixed border-tertiary",
+};
+
+const STATUS_ICONS: Record<Status, string> = {
+  confirmed: "check_circle",
+  pending: "pending_actions",
+  completed: "task_alt",
+  cancelled: "cancel",
 };
 
 function mapRow(row: Row): AppointmentView {
@@ -142,7 +159,7 @@ export default function AppointmentsView() {
   }, []);
 
   if (loading) {
-    return <p className="welcome-copy">Loading your appointments…</p>;
+    return <p className="text-body-lg text-on-surface-variant">Loading your appointments…</p>;
   }
 
   return (
@@ -150,89 +167,89 @@ export default function AppointmentsView() {
       {usingSamples ? (
         <div
           role="status"
-          style={{
-            marginTop: 18,
-            padding: "14px 16px",
-            borderRadius: 8,
-            background: "#fde6ca",
-            border: "2px solid #dc6803",
-            color: "#7a2e05",
-            fontSize: 16,
-          }}
+          className="mb-space-sm flex items-start gap-space-xs rounded-lg border-2 border-[#dc6803] bg-[#fde6ca] px-space-sm py-space-xs text-body-lg text-[#7a2e05]"
         >
-          Showing sample appointments{loadError ? ` — your records could not be loaded` : ""}.
-          Run the Phase 05 migration to see your real bookings.
+          <Icon name="info" size={28} className="mt-0.5 shrink-0" />
+          <span>
+            Showing sample appointments{loadError ? " — your records could not be loaded" : ""}.
+            Run the Phase 05 migration to see your real bookings.
+          </span>
         </div>
       ) : null}
 
       {appointments.length === 0 ? (
-        <div className="next-steps" style={{ marginTop: 30 }}>
-          <h2>
+        <div className="mt-space-md rounded-xl border-2 border-outline-variant bg-white p-space-md">
+          <h2 className="flex items-center gap-2 text-headline-lg-mobile text-on-surface">
+            <Icon name="event" size={30} className="text-primary" />
             <span className="anchor-target" id="no-appointments" />
             Nothing scheduled yet
           </h2>
-          <p>Book a visit and it will appear here with its date, time and status.</p>
+          <p className="mt-2 text-body-lg text-on-surface-variant">
+            Book a visit and it will appear here with its date, time and status.
+          </p>
         </div>
       ) : (
-        <section aria-label="Your appointments" style={{ display: "grid", gap: 16, marginTop: 22 }}>
+        <section aria-label="Your appointments" className="flex flex-col gap-space-sm">
           {appointments.map((appointment) => (
             <article
               key={appointment.id}
-              style={{
-                border: "2px solid var(--line)",
-                borderRadius: 10,
-                padding: 20,
-                background: "#fff",
-              }}
+              className="flex flex-col gap-space-xs rounded-xl border-2 border-outline-variant bg-white p-space-sm"
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  gap: 14,
-                  alignItems: "flex-start",
-                  flexWrap: "wrap",
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: 21, fontWeight: 740 }}>{appointment.doctorName}</div>
-                  <div style={{ fontSize: 16, color: "#435249" }}>{appointment.specialty}</div>
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-surface-container-high text-primary">
+                    <Icon name="person" size={32} />
+                  </span>
+                  <div className="min-w-0">
+                    <div className="truncate text-headline-lg-mobile text-on-surface">
+                      {appointment.doctorName}
+                    </div>
+                    <div className="text-body-lg text-on-surface-variant">
+                      {appointment.specialty}
+                    </div>
+                  </div>
                 </div>
+
                 <span
-                  style={{
-                    ...BADGE_STYLES[appointment.status],
-                    textTransform: "uppercase",
-                    fontSize: 13,
-                    fontWeight: 750,
-                    letterSpacing: "0.06em",
-                    borderRadius: 6,
-                    padding: "6px 12px",
-                  }}
+                  className={`inline-flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 text-label-lg uppercase ${BADGE_CLASSES[appointment.status]}`}
                 >
+                  <Icon name={STATUS_ICONS[appointment.status]} size={20} />
                   {appointment.status}
                 </span>
               </div>
 
-              <dl
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "auto 1fr",
-                  gap: "8px 18px",
-                  marginTop: 16,
-                  marginBottom: 0,
-                }}
-              >
-                <dt style={{ fontSize: 15, fontWeight: 700, color: "#435249" }}>When</dt>
-                <dd style={{ fontSize: 17, margin: 0 }}>
+              <dl className="mt-1 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
+                <dt className="flex items-center gap-1.5 text-label-lg text-on-surface-variant">
+                  <Icon name="schedule" size={22} />
+                  When
+                </dt>
+                <dd className="m-0 text-body-lg text-on-surface">
                   {formatInWat(appointment.startTime, "EEEE d MMMM yyyy")}
                   {" · "}
                   {formatInWat(appointment.startTime, "h:mm a")} –{" "}
                   {formatInWat(appointment.endTime, "h:mm a")} WAT
                 </dd>
 
-                <dt style={{ fontSize: 15, fontWeight: 700, color: "#435249" }}>Reason</dt>
-                <dd style={{ fontSize: 17, margin: 0 }}>{appointment.reasonForVisit}</dd>
+                <dt className="flex items-center gap-1.5 text-label-lg text-on-surface-variant">
+                  <Icon name="description" size={22} />
+                  Reason
+                </dt>
+                <dd className="m-0 text-body-lg text-on-surface">{appointment.reasonForVisit}</dd>
               </dl>
+
+              <div className="mt-1 flex justify-end">
+                <SpeakButton
+                  phrase={`Appointment with ${appointment.doctorName}, ${appointment.status}, on ${formatInWat(
+                    appointment.startTime,
+                    "EEEE d MMMM yyyy",
+                  )} at ${formatInWat(appointment.startTime, "h:mm a")} West Africa Time. Reason: ${
+                    appointment.reasonForVisit
+                  }`}
+                  label={`Listen to appointment with ${appointment.doctorName}`}
+                  className="bg-surface-container-high text-on-surface"
+                  size={52}
+                />
+              </div>
             </article>
           ))}
         </section>

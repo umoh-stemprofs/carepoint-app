@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
+import Icon from "@/components/common/Icon";
+import SpeakButton from "@/components/common/SpeakButton";
 import Topbar from "@/components/common/Topbar";
 import { tryCreateSupabaseBrowserClient } from "@/lib/supabase/client";
 import {
@@ -78,24 +80,8 @@ function writeLocalDraft(values: HealthProfileInput): void {
   }
 }
 
-const fieldStyle: React.CSSProperties = {
-  width: "100%",
-  minHeight: 64,
-  fontSize: 19,
-  padding: "12px 14px",
-  border: "2px solid var(--line)",
-  borderRadius: 8,
-  background: "#fff",
-  color: "var(--foreground)",
-  marginTop: 8,
-};
-
-const labelStyle: React.CSSProperties = {
-  display: "block",
-  fontSize: 17,
-  fontWeight: 700,
-  marginTop: 22,
-};
+const fieldClass =
+  "min-h-16 w-full rounded-xl bg-surface-container-low px-4 py-3 text-body-xl text-on-surface placeholder:text-outline focus:bg-white";
 
 export default function HealthProfilePage() {
   const [values, setValues] = useState<FormState>(EMPTY);
@@ -276,93 +262,119 @@ export default function HealthProfilePage() {
     <main className="home-page">
       <Topbar label="MY HEALTH PROFILE" />
 
-      <section className="welcome" style={{ paddingBottom: 20 }}>
-        <p className="eyebrow">DIGITAL HEALTH RECORD</p>
-        <h1>Your health profile</h1>
-        <p className="welcome-copy">
-          Keep your history, allergies and emergency contact in one place so your doctor can
-          review it before you arrive.
+      <header className="flex items-center justify-between gap-space-sm py-space-sm">
+        <Link
+          href="/"
+          className="flex min-h-16 items-center gap-space-xs rounded-lg bg-surface-container-high px-space-sm text-secondary no-underline press"
+        >
+          <Icon name="arrow_back" size={32} />
+          <span className="text-label-lg uppercase">Back</span>
+        </Link>
+        <h1 className="text-center text-headline-lg-mobile text-on-surface">My health profile</h1>
+      </header>
+
+      <div className="mb-space-md flex items-center gap-space-xs rounded-xl bg-surface-container-low p-space-sm">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary-fixed text-on-secondary-fixed">
+          <Icon name="hearing" size={28} />
+        </span>
+        <p className="text-body-lg text-on-surface">
+          Record your symptoms and show your papers to the doctor.
         </p>
-      </section>
-
-      {loading ? <p className="welcome-copy">Loading your record…</p> : null}
-
-      <form onSubmit={handleSave} noValidate>
-        <label style={labelStyle} htmlFor="medicalHistory">
-          Medical history
-        </label>
-        <textarea
-          id="medicalHistory"
-          rows={3}
-          value={values.medicalHistory}
-          onChange={(event) => update("medicalHistory", event.target.value)}
-          placeholder="Past conditions, surgeries, ongoing care"
-          style={{ ...fieldStyle, minHeight: 96, resize: "vertical" }}
+        <SpeakButton
+          phrase="My health profile. Record your symptoms, upload papers, then save your health profile."
+          label="Listen to this page"
+          className="bg-secondary text-white"
         />
+      </div>
 
-        <label style={labelStyle} htmlFor="allergies">
-          Known allergies
-        </label>
-        <textarea
-          id="allergies"
-          rows={2}
-          value={values.allergies}
-          onChange={(event) => update("allergies", event.target.value)}
-          placeholder="For example: penicillin, sulpha drugs"
-          style={{ ...fieldStyle, minHeight: 72, resize: "vertical" }}
-        />
+      {loading ? <p className="text-body-lg text-on-surface-variant">Loading your record…</p> : null}
 
-        <label style={labelStyle} htmlFor="currentMedications">
-          Current medications
-        </label>
-        <textarea
-          id="currentMedications"
-          rows={2}
-          value={values.currentMedications}
-          onChange={(event) => update("currentMedications", event.target.value)}
-          placeholder="List doses where you know them"
-          style={{ ...fieldStyle, minHeight: 72, resize: "vertical" }}
-        />
+      <form onSubmit={handleSave} noValidate className="flex flex-col gap-space-lg">
+        <section aria-labelledby="symptoms-heading" className="flex flex-col gap-space-xs">
+          <div className="flex items-center gap-space-xs">
+            <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary-container text-white">
+              <Icon name="monitor_heart" size={30} />
+            </span>
+            <h2 id="symptoms-heading" className="text-headline-lg-mobile text-on-surface">
+              1. My symptoms
+            </h2>
+          </div>
 
-        <label style={labelStyle} htmlFor="emergencyContactName">
-          Emergency contact name
-        </label>
-        <input
-          id="emergencyContactName"
-          type="text"
-          required
-          value={values.emergencyContactName}
-          onChange={(event) => update("emergencyContactName", event.target.value)}
-          style={fieldStyle}
-        />
+          <div className="flex flex-col gap-space-xs rounded-xl bg-surface-container-low p-space-md">
+            <label htmlFor="medicalHistory" className="flex items-center gap-2 text-label-lg text-on-surface">
+              <Icon name="record_voice_over" size={24} className="text-primary" />
+              Medical history
+            </label>
+            <textarea
+              id="medicalHistory"
+              rows={3}
+              value={values.medicalHistory}
+              onChange={(event) => update("medicalHistory", event.target.value)}
+              placeholder="Past conditions, surgeries, ongoing care"
+              className={`${fieldClass} min-h-24 resize-y`}
+            />
 
-        <label style={labelStyle} htmlFor="emergencyContactPhone">
-          Emergency contact phone
-        </label>
-        <input
-          id="emergencyContactPhone"
-          type="tel"
-          required
-          value={values.emergencyContactPhone}
-          onChange={(event) => update("emergencyContactPhone", event.target.value)}
-          placeholder="+234 803 123 4567"
-          style={fieldStyle}
-        />
+            <label htmlFor="allergies" className="flex items-center gap-2 text-label-lg text-on-surface">
+              <Icon name="warning" size={24} className="text-primary" />
+              Known allergies
+            </label>
+            <textarea
+              id="allergies"
+              rows={2}
+              value={values.allergies}
+              onChange={(event) => update("allergies", event.target.value)}
+              placeholder="For example: penicillin, sulpha drugs"
+              className={`${fieldClass} min-h-20 resize-y`}
+            />
+
+            <label htmlFor="currentMedications" className="flex items-center gap-2 text-label-lg text-on-surface">
+              <Icon name="medication" size={24} className="text-primary" />
+              Current medications
+            </label>
+            <textarea
+              id="currentMedications"
+              rows={2}
+              value={values.currentMedications}
+              onChange={(event) => update("currentMedications", event.target.value)}
+              placeholder="List doses where you know them"
+              className={`${fieldClass} min-h-20 resize-y`}
+            />
+
+            <label htmlFor="emergencyContactName" className="flex items-center gap-2 text-label-lg text-on-surface">
+              <Icon name="person" size={24} className="text-primary" />
+              Emergency contact name
+            </label>
+            <input
+              id="emergencyContactName"
+              type="text"
+              required
+              value={values.emergencyContactName}
+              onChange={(event) => update("emergencyContactName", event.target.value)}
+              className={fieldClass}
+            />
+
+            <label htmlFor="emergencyContactPhone" className="flex items-center gap-2 text-label-lg text-on-surface">
+              <Icon name="call" size={24} className="text-primary" />
+              Emergency contact phone
+            </label>
+            <input
+              id="emergencyContactPhone"
+              type="tel"
+              required
+              value={values.emergencyContactPhone}
+              onChange={(event) => update("emergencyContactPhone", event.target.value)}
+              placeholder="+234 803 123 4567"
+              className={fieldClass}
+            />
+          </div>
+        </section>
 
         {issues.length > 0 ? (
           <div
             role="alert"
-            style={{
-              marginTop: 22,
-              padding: "14px 16px",
-              borderRadius: 8,
-              background: "#fee4e2",
-              border: "2px solid var(--red)",
-              color: "#7a271a",
-              fontSize: 17,
-            }}
+            className="rounded-lg border-2 border-tertiary bg-error-container px-space-sm py-space-xs text-body-lg text-on-error-container"
           >
-            <ul style={{ margin: 0, paddingLeft: 20 }}>
+            <ul className="m-0 list-disc pl-6">
               {issues.map((issue) => (
                 <li key={issue}>{issue}</li>
               ))}
@@ -373,17 +385,9 @@ export default function HealthProfilePage() {
         {notice === "saved-server" ? (
           <p
             role="status"
-            style={{
-              marginTop: 22,
-              padding: "16px 18px",
-              borderRadius: 8,
-              background: "#dcfae6",
-              border: "3px solid var(--green)",
-              color: "#05603a",
-              fontSize: 18,
-              fontWeight: 700,
-            }}
+            className="flex items-center gap-2 rounded-lg border-2 border-primary bg-primary-fixed px-space-sm py-space-xs text-body-lg font-bold text-on-primary-fixed"
           >
+            <Icon name="check_circle" size={30} />
             Your health profile has been saved.
           </p>
         ) : null}
@@ -391,55 +395,55 @@ export default function HealthProfilePage() {
         {notice === "saved-local" ? (
           <p
             role="status"
-            style={{
-              marginTop: 22,
-              padding: "16px 18px",
-              borderRadius: 8,
-              background: "#fde6ca",
-              border: "3px solid #dc6803",
-              color: "#7a2e05",
-              fontSize: 17,
-            }}
+            className="flex items-start gap-2 rounded-lg border-2 border-[#dc6803] bg-[#fde6ca] px-space-sm py-space-xs text-body-lg text-[#7a2e05]"
           >
-            Saved on this device only — your record could not reach the server, so it is not
-            synced to your account yet. Reconnect and save again to store it properly.
+            <Icon name="info" size={28} className="mt-0.5 shrink-0" />
+            <span>
+              Saved on this device only — your record could not reach the server, so it is not
+              synced to your account yet. Reconnect and save again to store it properly.
+            </span>
           </p>
         ) : null}
 
         <button
           type="submit"
           disabled={busy}
-          style={{
-            width: "100%",
-            minHeight: 64,
-            marginTop: 28,
-            fontSize: 20,
-            fontWeight: 750,
-            borderRadius: 8,
-            border: "none",
-            background: "var(--green)",
-            color: "#fff",
-            cursor: busy ? "wait" : "pointer",
-            opacity: busy ? 0.7 : 1,
-          }}
+          className="flex min-h-18 w-full items-center justify-center gap-space-xs rounded-xl bg-primary-container text-headline-lg-mobile text-white shadow-tactile press disabled:cursor-wait disabled:opacity-70"
         >
-          {busy ? "SAVING…" : "SAVE PROFILE"}
+          <Icon name="check_circle" size={36} />
+          {busy ? "SAVING…" : "SAVE HEALTH PROFILE"}
         </button>
       </form>
 
-      <hr style={{ border: "none", borderTop: "1px solid var(--line)", margin: "40px 0 0" }} />
+      <section aria-labelledby="papers-heading" className="mt-space-xl flex flex-col gap-space-xs">
+        <div className="flex items-center gap-space-xs">
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-secondary text-white">
+            <Icon name="folder" size={30} />
+          </span>
+          <h2 id="papers-heading" className="text-headline-lg-mobile text-on-surface">
+            2. Upload papers
+          </h2>
+        </div>
 
-      <section aria-label="Medical documents" style={{ marginTop: 26 }}>
-        <p className="eyebrow" style={{ marginBottom: 10 }}>
-          MEDICAL DOCUMENTS
-        </p>
-        <h2 style={{ fontSize: 24, margin: "0 0 8px" }}>Upload a record</h2>
-        <p className="welcome-copy" style={{ fontSize: 17, marginTop: 0 }}>
+        <p className="text-body-lg text-on-surface-variant">
           Lab results, prescriptions or photos of paper records. PDF, PNG or JPG, up to 5 MB.
         </p>
 
-        <form onSubmit={handleUpload} noValidate>
+        <form onSubmit={handleUpload} noValidate className="flex flex-col gap-space-xs">
+          <label
+            htmlFor="medicalDocument"
+            className="flex min-h-32 w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl bg-secondary-container p-space-sm text-center text-on-secondary-container press"
+          >
+            <span className="flex items-center justify-center gap-space-md">
+              <Icon name="photo_camera" size={34} />
+              <Icon name="upload_file" size={34} />
+            </span>
+            <span className="text-label-xl uppercase">Take photo or upload lab PDF</span>
+            <span className="text-label-lg">Tap here — max 5 MB</span>
+          </label>
+
           <input
+            id="medicalDocument"
             ref={fileInputRef}
             type="file"
             accept="application/pdf,image/png,image/jpeg,.pdf,.png,.jpg,.jpeg"
@@ -448,30 +452,45 @@ export default function HealthProfilePage() {
               setUploadIssue(null);
               setUploadNotice(null);
             }}
-            style={{
-              display: "block",
-              width: "100%",
-              fontSize: 17,
-              padding: "16px 14px",
-              border: "2px dashed var(--line)",
-              borderRadius: 8,
-              background: "#fff",
-            }}
+            className="min-h-14 w-full rounded-xl border-2 border-dashed border-outline-variant bg-white p-3 text-body-lg text-on-surface file:mr-3 file:rounded-lg file:border-0 file:bg-surface-container-high file:px-4 file:py-2 file:text-label-lg file:text-on-surface"
           />
+
+          {pendingFile ? (
+            <div className="flex items-center justify-between gap-3 rounded-xl bg-surface-container-low p-space-xs">
+              <span className="flex min-w-0 items-center gap-space-xs">
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-secondary-fixed text-on-secondary-fixed">
+                  <Icon
+                    name={pendingFile.type === "application/pdf" ? "picture_as_pdf" : "image"}
+                    size={32}
+                  />
+                </span>
+                <span className="flex min-w-0 flex-col">
+                  <span className="truncate text-label-lg text-on-surface">{pendingFile.name}</span>
+                  <span className="text-body-lg text-on-surface-variant">
+                    {formatMegabytes(pendingFile.size)} of 5.0 MB
+                  </span>
+                </span>
+              </span>
+              <button
+                type="button"
+                aria-label={`Remove ${pendingFile.name}`}
+                onClick={() => {
+                  setPendingFile(null);
+                  if (fileInputRef.current) fileInputRef.current.value = "";
+                }}
+                className="flex min-h-14 min-w-14 items-center justify-center rounded-lg bg-surface-container-highest text-tertiary press"
+              >
+                <Icon name="delete" size={28} />
+              </button>
+            </div>
+          ) : null}
 
           {uploadIssue ? (
             <p
               role="alert"
-              style={{
-                marginTop: 16,
-                padding: "14px 16px",
-                borderRadius: 8,
-                background: "#fee4e2",
-                border: "2px solid var(--red)",
-                color: "#7a271a",
-                fontSize: 16,
-              }}
+              className="flex items-center gap-2 rounded-lg border-2 border-tertiary bg-error-container px-space-sm py-space-xs text-body-lg text-on-error-container"
             >
+              <Icon name="error" size={28} className="shrink-0" />
               {uploadIssue}
             </p>
           ) : null}
@@ -479,17 +498,9 @@ export default function HealthProfilePage() {
           {uploadNotice ? (
             <p
               role="status"
-              style={{
-                marginTop: 16,
-                padding: "14px 16px",
-                borderRadius: 8,
-                background: "#dcfae6",
-                border: "2px solid var(--green)",
-                color: "#05603a",
-                fontSize: 16,
-                fontWeight: 700,
-              }}
+              className="flex items-center gap-2 rounded-lg border-2 border-primary bg-primary-fixed px-space-sm py-space-xs text-body-lg font-bold text-on-primary-fixed"
             >
+              <Icon name="check_circle" size={28} className="shrink-0" />
               {uploadNotice}
             </p>
           ) : null}
@@ -497,27 +508,18 @@ export default function HealthProfilePage() {
           <button
             type="submit"
             disabled={uploading}
-            style={{
-              width: "100%",
-              minHeight: 64,
-              marginTop: 20,
-              fontSize: 19,
-              fontWeight: 750,
-              borderRadius: 8,
-              border: "2px solid var(--blue)",
-              background: uploading ? "#fff" : "var(--blue)",
-              color: uploading ? "var(--blue)" : "#fff",
-              cursor: uploading ? "wait" : "pointer",
-              opacity: uploading ? 0.7 : 1,
-            }}
+            className="flex min-h-16 w-full items-center justify-center gap-space-xs rounded-xl bg-primary text-label-xl text-white shadow-tactile press disabled:cursor-wait disabled:opacity-70"
           >
+            <Icon name="cloud_upload" size={30} />
             {uploading ? "UPLOADING…" : "UPLOAD DOCUMENT"}
           </button>
         </form>
       </section>
 
-      <p className="welcome-copy" style={{ marginTop: 30, fontSize: 16 }}>
-        <Link href="/">← Back to home</Link>
+      <p className="mt-space-lg text-body-lg">
+        <Link href="/" className="text-primary">
+          ← Back to home
+        </Link>
       </p>
     </main>
   );

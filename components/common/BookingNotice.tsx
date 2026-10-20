@@ -2,6 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 
+import Icon from "@/components/common/Icon";
+
 /**
  * Success banner shown after the booking wizard redirects to /appointments
  * with `?booked=1` (plan Phase 07).
@@ -19,24 +21,9 @@ export default function BookingNotice() {
   return (
     <div
       role="status"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        marginTop: 22,
-        padding: "16px 18px",
-        borderRadius: 8,
-        background: "#dcfae6",
-        border: "3px solid var(--green)",
-        color: "#05603a",
-        fontSize: 19,
-        fontWeight: 700,
-        lineHeight: 1.4,
-      }}
+      className="mb-space-sm flex items-center gap-space-xs rounded-xl border-2 border-primary bg-primary-fixed p-space-sm text-body-lg font-bold text-on-primary-fixed"
     >
-      <span aria-hidden="true" style={{ fontSize: 26 }}>
-        ✓
-      </span>
+      <Icon name="check_circle" size={34} className="shrink-0 text-primary" />
       Your appointment is confirmed. It is listed below.
     </div>
   );

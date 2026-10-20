@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
 import EmergencyBanner from "@/components/common/EmergencyBanner";
+import PrototypeNotice from "@/components/common/PrototypeNotice";
+
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+/*
+ * Both typefaces are vendored in public/fonts and declared in globals.css.
+ * They are deliberately *not* loaded through next/font/google: that loader
+ * failed on these families at build time, and it would re-introduce the
+ * runtime fonts.googleapis.com dependency the plan forbids — a font that must
+ * cross a 2G link is a font that will not be on screen when the page paints.
+ */
 
 export const metadata: Metadata = {
   title: "CarePoint | See a doctor",
-  description: "Accessible healthcare access for patients and doctors.",
+  description:
+    "Accessible telemedicine appointments for patients and doctors. Prototype for the STEM Festival.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
+    <html lang="en" className="h-full antialiased">
+      <body className="flex min-h-full flex-col">
         <div className="site-content">{children}</div>
+        {/* Rulebook Ethical Code: safety and honesty stay on every screen. */}
+        <PrototypeNotice />
         <EmergencyBanner />
       </body>
     </html>

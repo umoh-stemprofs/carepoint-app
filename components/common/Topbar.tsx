@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
+import Icon from "@/components/common/Icon";
 import { tryCreateSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type AuthState = {
@@ -26,6 +27,7 @@ function roleFrom(metadata: unknown): string | null {
  */
 export default function Topbar({ label }: { label?: string }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [auth, setAuth] = useState<AuthState>({ email: null, role: null });
 
   useEffect(() => {
@@ -80,42 +82,51 @@ export default function Topbar({ label }: { label?: string }) {
   }
 
   return (
-    <header className="topbar">
-      <Link className="brand" href="/">
-        <span className="brand-mark" aria-hidden="true">
-          +
+    <header className="flex min-h-20 w-full items-center justify-between gap-space-xs border-b-2 border-surface-container-high px-margin py-space-sm">
+      <Link className="flex min-w-0 items-center gap-3 no-underline" href="/">
+        <span
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary text-white shadow-tactile-sm"
+          aria-hidden="true"
+        >
+          <Icon name="health_and_safety" size={30} />
         </span>
-        <span>CarePoint</span>
+        <span className="flex min-w-0 flex-col leading-none">
+          <span className="text-headline-lg-mobile text-on-surface">CarePoint</span>
+          {/* The section label is a desktop affordance. Truncating it to
+              "TELEHE..." on a phone reads as a broken screen to exactly the
+              user this design targets, so it is simply absent below sm. */}
+          <span className="mt-1 hidden min-w-0 items-center gap-1.5 text-label-lg text-primary sm:flex">
+            <span
+              className="inline-block h-2 w-2 shrink-0 rounded-full bg-primary"
+              aria-hidden="true"
+            />
+            <span className="truncate">{label ?? "See a doctor"}</span>
+          </span>
+        </span>
       </Link>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-        {label ? <span className="service-label">{label}</span> : null}
-
+      <div className="flex shrink-0 items-center gap-3">
         {auth.email ? (
-          <span style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span className="service-label">
+          <span className="flex items-center justify-end gap-3">
+            <span className="hidden max-w-56 truncate text-label-lg text-on-surface-variant sm:block">
               {auth.email}
               {auth.role ? ` · ${auth.role}` : ""}
             </span>
             <button
               type="button"
               onClick={handleSignOut}
-              className="service-label"
-              style={{
-                background: "none",
-                border: "1px solid var(--line)",
-                borderRadius: 6,
-                padding: "8px 12px",
-                cursor: "pointer",
-                color: "var(--foreground)",
-                minHeight: 40,
-              }}
+              className="flex min-h-12 items-center gap-2 rounded-lg border-2 border-on-surface bg-white px-space-sm text-label-lg text-on-surface press"
             >
+              <Icon name="logout" size={24} />
               Log out
             </button>
           </span>
-        ) : (
-          <Link className="service-label" href="/login" style={{ textDecoration: "none" }}>
+        ) : pathname === "/login" ? null : (
+          <Link
+            className="flex min-h-12 items-center gap-2 rounded-lg bg-primary px-space-sm text-label-lg text-white no-underline press"
+            href="/login"
+          >
+            <Icon name="login" size={24} />
             LOG IN
           </Link>
         )}

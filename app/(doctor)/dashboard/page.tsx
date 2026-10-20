@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import Icon from "@/components/common/Icon";
 import Topbar from "@/components/common/Topbar";
 import AIDiagnosticDrawer from "@/components/doctor/AIDiagnosticDrawer";
 import { tryCreateSupabaseBrowserClient } from "@/lib/supabase/client";
@@ -63,11 +64,18 @@ function sampleQueue(): QueueItem[] {
   ];
 }
 
-const BADGE_STYLES: Record<Status, React.CSSProperties> = {
-  confirmed: { background: "#dcfae6", border: "2px solid #12b76a", color: "#05603a" },
-  pending: { background: "#fef0c7", border: "2px solid #f79009", color: "#93370d" },
-  completed: { background: "#e0e7ff", border: "2px solid #6172f3", color: "#3538cd" },
-  cancelled: { background: "#fee4e2", border: "2px solid #f04438", color: "#7a271a" },
+const BADGE_CLASSES: Record<Status, string> = {
+  confirmed: "bg-primary-fixed text-on-primary-fixed border-primary",
+  pending: "bg-[#fef0c7] text-[#93370d] border-[#f79009]",
+  completed: "bg-secondary-fixed text-on-secondary-fixed border-secondary",
+  cancelled: "bg-tertiary-fixed text-on-tertiary-fixed border-tertiary",
+};
+
+const STATUS_ICONS: Record<Status, string> = {
+  confirmed: "check_circle",
+  pending: "pending_actions",
+  completed: "task_alt",
+  cancelled: "cancel",
 };
 
 function mapRow(row: Row): QueueItem {
@@ -88,19 +96,21 @@ type QueueAction = "confirmed" | "completed" | "cancelled";
 
 function StatusButton({
   label,
+  icon,
   tone,
   disabled,
   onClick,
 }: {
   label: string;
-  tone: "primary" | "neutral" | "danger";
+  icon: string;
+  tone: "primary" | "secondary" | "danger";
   disabled: boolean;
   onClick: () => void;
 }) {
   const palette = {
-    primary: { background: "var(--green)", color: "#fff", border: "var(--green)" },
-    neutral: { background: "#fff", color: "var(--blue)", border: "var(--blue)" },
-    danger: { background: "#fff", color: "var(--red)", border: "var(--red)" },
+    primary: "bg-primary text-white",
+    secondary: "bg-secondary text-white",
+    danger: "border-2 border-tertiary bg-white text-tertiary",
   }[tone];
 
   return (
@@ -108,19 +118,9 @@ function StatusButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      style={{
-        minHeight: 48,
-        padding: "0 16px",
-        fontSize: 16,
-        fontWeight: 700,
-        borderRadius: 6,
-        cursor: disabled ? "not-allowed" : "pointer",
-        opacity: disabled ? 0.45 : 1,
-        background: palette.background,
-        color: palette.color,
-        border: `2px solid ${palette.border}`,
-      }}
+      className={`flex min-h-14 items-center justify-center gap-2 rounded-lg px-4 text-label-lg press disabled:cursor-not-allowed disabled:opacity-45 ${palette}`}
     >
+      <Icon name={icon} size={24} />
       {label}
     </button>
   );
@@ -141,61 +141,53 @@ function QueueCard({
 
   return (
     <article
-      style={{
-        border: "2px solid var(--line)",
-        borderLeft: `6px solid ${isToday ? "var(--blue)" : "var(--line)"}`,
-        borderRadius: 10,
-        padding: 18,
-        background: "#fff",
-      }}
+      className={`flex flex-col gap-space-xs rounded-xl border-2 bg-white p-space-sm ${
+        isToday ? "border-secondary" : "border-surface-container-high"
+      }`}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: 12,
-          alignItems: "flex-start",
-          flexWrap: "wrap",
-        }}
-      >
-        <div>
-          <div style={{ fontSize: 20, fontWeight: 740 }}>{item.patientName}</div>
-          <div style={{ fontSize: 15, color: "#435249" }}>
-            {formatInWat(item.startTime, "EEEE d MMMM yyyy")} ·{" "}
-            {formatInWat(item.startTime, "h:mm a")} – {formatInWat(item.endTime, "h:mm a")} WAT
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-surface-container-high text-primary">
+            <Icon name="person" size={32} />
+          </span>
+          <div className="min-w-0">
+            <div className="truncate text-headline-lg-mobile text-on-surface">{item.patientName}</div>
+            <div className="flex items-center gap-1.5 text-body-lg text-on-surface-variant">
+              <Icon name="schedule" size={20} />
+              {formatInWat(item.startTime, "EEEE d MMMM yyyy")} ·{" "}
+              {formatInWat(item.startTime, "h:mm a")} – {formatInWat(item.endTime, "h:mm a")} WAT
+            </div>
           </div>
         </div>
+
         <span
-          style={{
-            ...BADGE_STYLES[item.status],
-            textTransform: "uppercase",
-            fontSize: 13,
-            fontWeight: 750,
-            letterSpacing: "0.06em",
-            borderRadius: 6,
-            padding: "6px 12px",
-          }}
+          className={`inline-flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 text-label-lg uppercase ${BADGE_CLASSES[item.status]}`}
         >
+          <Icon name={STATUS_ICONS[item.status]} size={20} />
           {item.status}
         </span>
       </div>
-      <p style={{ fontSize: 17, marginTop: 12, marginBottom: 0 }}>{item.reasonForVisit}</p>
 
-      <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
+      <p className="m-0 text-body-lg text-on-surface">{item.reasonForVisit}</p>
+
+      <div className="flex flex-wrap gap-space-xs">
         <StatusButton
           label="Confirm"
+          icon="check_circle"
           tone="primary"
           disabled={busy || item.status !== "pending"}
           onClick={() => onAction("confirmed")}
         />
         <StatusButton
           label="Complete"
-          tone="neutral"
+          icon="task_alt"
+          tone="secondary"
           disabled={busy || item.status !== "confirmed"}
           onClick={() => onAction("completed")}
         />
         <StatusButton
           label="Cancel"
+          icon="cancel"
           tone="danger"
           disabled={busy || isFinished}
           onClick={() => onAction("cancelled")}
@@ -299,9 +291,9 @@ export default function DoctorDashboardPage() {
     <main className="home-page">
       <Topbar label="DOCTOR DASHBOARD" />
 
-      <section className="welcome" style={{ paddingBottom: 20 }}>
+      <section className="welcome">
         <p className="eyebrow">PHYSICIAN WORKSPACE</p>
-        <h1>Today&apos;s schedule</h1>
+        <h1 className="text-headline-xl-mobile sm:text-headline-xl">Today&apos;s schedule</h1>
         <p className="welcome-copy">
           {loading
             ? "Loading your queue…"
@@ -312,50 +304,44 @@ export default function DoctorDashboardPage() {
       {usingSamples ? (
         <div
           role="status"
-          style={{
-            marginTop: 6,
-            padding: "14px 16px",
-            borderRadius: 8,
-            background: "#fde6ca",
-            border: "2px solid #dc6803",
-            color: "#7a2e05",
-            fontSize: 16,
-          }}
+          className="mb-space-sm flex items-start gap-space-xs rounded-lg border-2 border-[#dc6803] bg-[#fde6ca] px-space-sm py-space-xs text-body-lg text-[#7a2e05]"
         >
-          Showing a sample queue — run the Phase 05 migration to load your real appointments.
+          <Icon name="info" size={28} className="mt-0.5 shrink-0" />
+          <span>
+            Showing a sample queue — run the Phase 05 migration to load your real appointments.
+          </span>
         </div>
       ) : null}
 
       {actionError ? (
         <div
           role="alert"
-          style={{
-            marginTop: 18,
-            padding: "14px 16px",
-            borderRadius: 8,
-            background: "#fee4e2",
-            border: "2px solid var(--red)",
-            color: "#7a271a",
-            fontSize: 16,
-          }}
+          className="mb-space-sm flex items-center gap-space-xs rounded-lg border-2 border-tertiary bg-error-container px-space-sm py-space-xs text-body-lg text-on-error-container"
         >
+          <Icon name="error" size={28} className="shrink-0" />
           {actionError}
         </div>
       ) : null}
 
       {!loading && items.length === 0 ? (
-        <div className="next-steps" style={{ marginTop: 26 }}>
-          <h2>
+        <div className="mt-space-md rounded-xl border-2 border-outline-variant bg-white p-space-md">
+          <h2 className="flex items-center gap-2 text-headline-lg-mobile text-on-surface">
+            <Icon name="event" size={30} className="text-primary" />
             <span className="anchor-target" id="empty-queue" />
             No appointments scheduled
           </h2>
-          <p>Patient bookings will appear here as soon as they are confirmed.</p>
+          <p className="mt-2 text-body-lg text-on-surface-variant">
+            Patient bookings will appear here as soon as they are confirmed.
+          </p>
         </div>
       ) : null}
 
       {todays.length > 0 ? (
-        <section aria-label="Today" style={{ display: "grid", gap: 14, marginTop: 20 }}>
-          <h2 style={{ fontSize: 22, margin: "10px 0 0" }}>Today</h2>
+        <section aria-label="Today" className="flex flex-col gap-space-sm">
+          <h2 className="flex items-center gap-2 text-headline-lg-mobile text-on-surface">
+            <Icon name="today" size={28} className="text-secondary" />
+            Today
+          </h2>
           {todays.map((item) => (
             <QueueCard
               key={item.id}
@@ -369,8 +355,11 @@ export default function DoctorDashboardPage() {
       ) : null}
 
       {upcoming.length > 0 ? (
-        <section aria-label="Upcoming" style={{ display: "grid", gap: 14, marginTop: 28 }}>
-          <h2 style={{ fontSize: 22, margin: 0 }}>Upcoming</h2>
+        <section aria-label="Upcoming" className="mt-space-xl flex flex-col gap-space-sm">
+          <h2 className="flex items-center gap-2 text-headline-lg-mobile text-on-surface">
+            <Icon name="calendar_month" size={28} className="text-secondary" />
+            Upcoming
+          </h2>
           {upcoming.map((item) => (
             <QueueCard
               key={item.id}
@@ -385,8 +374,10 @@ export default function DoctorDashboardPage() {
 
       <AIDiagnosticDrawer />
 
-      <p className="welcome-copy" style={{ marginTop: 32, fontSize: 16 }}>
-        <Link href="/">← Back to home</Link>
+      <p className="mt-space-lg text-body-lg">
+        <Link href="/" className="text-primary">
+          ← Back to home
+        </Link>
       </p>
     </main>
   );
