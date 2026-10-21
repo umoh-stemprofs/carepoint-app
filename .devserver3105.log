@@ -166,3 +166,3680 @@ Patient qa-patient booked with qa-doctor on Wed 4 Oct 2026, 09:00 – 10:00 WAT.
  GET /dashboard 200 in 1616ms (next.js: 121ms, proxy.ts: 616ms, application-code: 879ms)
  GET /dashboard 200 in 1166ms (next.js: 39ms, proxy.ts: 265ms, application-code: 862ms)
  GET /appointments 200 in 895ms (next.js: 70ms, proxy.ts: 515ms, application-code: 310ms)
+✓ Compiled in 681ms
+ GET / 200 in 1285ms (next.js: 40ms, application-code: 1245ms)
+ GET /login 200 in 2.3s (next.js: 1390ms, proxy.ts: 200ms, application-code: 681ms)
+ GET /dashboard 200 in 3.7s (next.js: 450ms, proxy.ts: 2.5s, application-code: 680ms)
+ GET /appointments 200 in 4.3s (next.js: 1021ms, proxy.ts: 2.9s, application-code: 353ms)
+ GET / 200 in 76ms (next.js: 5ms, application-code: 72ms)
+ GET / 200 in 71ms (next.js: 5ms, application-code: 66ms)
+ GET /login?redirect=%2Fbook 307 in 50ms (proxy.ts: 7ms)
+ GET /login?redirect=%2Fbook 200 in 100ms (next.js: 16ms, proxy.ts: 7ms, application-code: 77ms)
+ GET / 200 in 78ms (next.js: 5ms, application-code: 73ms)
+ GET /login 200 in 102ms (next.js: 16ms, proxy.ts: 8ms, application-code: 78ms)
+ GET / 200 in 88ms (next.js: 10ms, application-code: 79ms)
+ GET /login 200 in 4.0s (next.js: 1194ms, proxy.ts: 22ms, application-code: 2.8s)
+ GET / 200 in 1752ms (next.js: 6ms, application-code: 1746ms)
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:126:7
+Error: Expected '>', got 'ident'
+  124 |       
+  125 |       
+> 126 |     </main>
+      |       ^^^^
+  127 |   );
+  128 | }
+  129 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+✓ Compiled in 817ms
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+○ Compiling /_error ...
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+ GET /login 500 in 14.8s (next.js: 12.8s, proxy.ts: 771ms, application-code: 1228ms)
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] Uncaught Error: ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed
+
+
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+ GET /login 500 in 1291ms (next.js: 1151ms, proxy.ts: 26ms, application-code: 114ms)
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] Uncaught Error: ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed
+
+
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+ GET /login 500 in 1129ms (next.js: 832ms, proxy.ts: 13ms, application-code: 284ms)
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] Uncaught Error: ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed
+
+
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+ GET /login 500 in 144ms (next.js: 68ms, proxy.ts: 16ms, application-code: 60ms)
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+ GET /login 500 in 874ms (next.js: 571ms, proxy.ts: 11ms, application-code: 292ms)
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+ GET /login 500 in 249ms (next.js: 190ms, proxy.ts: 11ms, application-code: 48ms)
+⨯ ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  [90m4 |[0m [36mimport[0m [33mSpeakButton[0m [36mfrom[0m [32m"@/components/common/SpeakButton"[0m;
+  [90m5 |[0m [36mimport[0m [33mTopbar[0m [36mfrom[0m [32m"@/components/common/Topbar"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m"@/lib/supabase/server"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m
+  [90m8 |[0m /**
+  [90m9 |[0m  * [33mLanding[0m screen — the [32m"see_a_doctor"[0m [33mStitch[0m sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+ GET / 500 in 77ms (next.js: 35ms, application-code: 42ms)
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseRscClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+✓ Compiled in 611ms
+ GET /login 200 in 1664ms (next.js: 770ms, proxy.ts: 18ms, application-code: 876ms)
+ GET / 200 in 1240ms (next.js: 816ms, application-code: 424ms)
+Error: Route "/": Next.js encountered runtime data during prerendering.
+
+`cookies()`, `headers()`, `params`, or `searchParams` accessed outside of `<Suspense>` prevents the route from being prerendered, blocking the page load and leading to a slower user experience.
+
+Ways to fix this:
+  - [stream] Provide a placeholder with `<Suspense fallback={...}>` around the data access
+  - [block] Set `export const instant = false` to allow a blocking route
+
+Learn more: https://nextjs.org/docs/messages/blocking-prerender-runtime
+    at createSupabaseRscClient (lib\supabase\server.ts:53:36)
+    at Home (app\page.tsx:22:49)
+  51 |   }
+  52 |
+> 53 |   const cookieStore = await cookies();
+     |                                    ^
+  54 |
+  55 |   return createServerClient(url, anonKey, {
+  56 |     cookies: {
+ GET /login 200 in 573ms (next.js: 229ms, proxy.ts: 16ms, application-code: 328ms)
+ GET / 200 in 751ms (next.js: 8ms, application-code: 744ms)
+Error: Route "/": Next.js encountered runtime data during prerendering.
+
+`cookies()`, `headers()`, `params`, or `searchParams` accessed outside of `<Suspense>` prevents the route from being prerendered, blocking the page load and leading to a slower user experience.
+
+Ways to fix this:
+  - [stream] Provide a placeholder with `<Suspense fallback={...}>` around the data access
+  - [block] Set `export const instant = false` to allow a blocking route
+
+Learn more: https://nextjs.org/docs/messages/blocking-prerender-runtime
+    at createSupabaseRscClient (lib\supabase\server.ts:53:36)
+    at Home (app\page.tsx:22:49)
+  51 |   }
+  52 |
+> 53 |   const cookieStore = await cookies();
+     |                                    ^
+  54 |
+  55 |   return createServerClient(url, anonKey, {
+  56 |     cookies: {
+ GET /login 200 in 443ms (next.js: 86ms, proxy.ts: 15ms, application-code: 342ms)
+ GET /book 200 in 1904ms (next.js: 312ms, proxy.ts: 1226ms, application-code: 366ms)
+ GET / 200 in 2.6s (next.js: 185ms, application-code: 2.4s)
+Error: Route "/": Next.js encountered the unstable value `Date.now()` while prerendering.
+
+This value can change between renders, so it must be either prerendered or computed later.
+
+Ways to fix this:
+  - [dynamic] Render at request time by adding a dynamic data access (e.g. `await connection()`) before this call
+  - [cache] Prerender and cache the value with `"use cache"`
+  - [client] Render the value on the client with `"use client"`
+  - [measure] If the value is for telemetry, use a timing API such as `performance.now()`
+
+Learn more: https://nextjs.org/docs/messages/blocking-prerender-current-time
+    at Home (<anonymous>)
+ GET /login 200 in 580ms (next.js: 156ms, proxy.ts: 14ms, application-code: 410ms)
+ GET /login 200 in 386ms (next.js: 140ms, proxy.ts: 13ms, application-code: 234ms)
+ GET /book 200 in 3.0s (next.js: 92ms, proxy.ts: 2.6s, application-code: 336ms)
+ GET / 200 in 1043ms (next.js: 8ms, application-code: 1035ms)
+Error: Route "/": Next.js encountered the unstable value `Date.now()` while prerendering.
+
+This value can change between renders, so it must be either prerendered or computed later.
+
+Ways to fix this:
+  - [dynamic] Render at request time by adding a dynamic data access (e.g. `await connection()`) before this call
+  - [cache] Prerender and cache the value with `"use cache"`
+  - [client] Render the value on the client with `"use client"`
+  - [measure] If the value is for telemetry, use a timing API such as `performance.now()`
+
+Learn more: https://nextjs.org/docs/messages/blocking-prerender-current-time
+    at Home (<anonymous>)
+ GET /login 200 in 304ms (next.js: 39ms, proxy.ts: 15ms, application-code: 250ms)
+ GET / 200 in 426ms (next.js: 8ms, application-code: 418ms)
+Error: Route "/": Next.js encountered runtime data during prerendering.
+
+`cookies()`, `headers()`, `params`, or `searchParams` accessed outside of `<Suspense>` prevents the route from being prerendered, blocking the page load and leading to a slower user experience.
+
+Ways to fix this:
+  - [stream] Provide a placeholder with `<Suspense fallback={...}>` around the data access
+  - [block] Set `export const instant = false` to allow a blocking route
+
+Learn more: https://nextjs.org/docs/messages/blocking-prerender-runtime
+    at createSupabaseRscClient (lib\supabase\server.ts:53:36)
+    at Home (app\page.tsx:22:49)
+  51 |   }
+  52 |
+> 53 |   const cookieStore = await cookies();
+     |                                    ^
+  54 |
+  55 |   return createServerClient(url, anonKey, {
+  56 |     cookies: {
+ GET /login 200 in 365ms (next.js: 194ms, proxy.ts: 13ms, application-code: 157ms)
+ GET /book 200 in 1426ms (next.js: 95ms, proxy.ts: 1088ms, application-code: 242ms)
+ GET / 200 in 1155ms (next.js: 4ms, application-code: 1151ms)
+Error: Route "/": Next.js encountered the unstable value `Date.now()` while prerendering.
+
+This value can change between renders, so it must be either prerendered or computed later.
+
+Ways to fix this:
+  - [dynamic] Render at request time by adding a dynamic data access (e.g. `await connection()`) before this call
+  - [cache] Prerender and cache the value with `"use cache"`
+  - [client] Render the value on the client with `"use client"`
+  - [measure] If the value is for telemetry, use a timing API such as `performance.now()`
+
+Learn more: https://nextjs.org/docs/messages/blocking-prerender-current-time
+    at Home (<anonymous>)
+ GET /login 200 in 282ms (next.js: 61ms, proxy.ts: 11ms, application-code: 210ms)
+ GET /dashboard 200 in 922ms (next.js: 223ms, proxy.ts: 467ms, application-code: 232ms)
+ GET / 200 in 1222ms (next.js: 11ms, application-code: 1211ms)
+Error: Route "/": Next.js encountered the unstable value `Date.now()` while prerendering.
+
+This value can change between renders, so it must be either prerendered or computed later.
+
+Ways to fix this:
+  - [dynamic] Render at request time by adding a dynamic data access (e.g. `await connection()`) before this call
+  - [cache] Prerender and cache the value with `"use cache"`
+  - [client] Render the value on the client with `"use client"`
+  - [measure] If the value is for telemetry, use a timing API such as `performance.now()`
+
+Learn more: https://nextjs.org/docs/messages/blocking-prerender-current-time
+    at Home (<anonymous>)
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:123:9
+Error: Expected '>', got 'ident'
+  121 |           No reading required. Doctors talk with you directly.
+  122 |         </p>
+> 123 |       </section>
+      |         ^^^^^^^
+  124 |     </>
+  125 |   );
+  126 | }
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseServerClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+[browser] ./app/page.tsx:6:1
+Error: Export createClient doesn't exist in target module
+  4 | import SpeakButton from "@/components/common/SpeakButton";
+  5 | import Topbar from "@/components/common/Topbar";
+> 6 | import { createClient } from "@/lib/supabase/server";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | /**
+  9 |  * Landing screen — the "see_a_doctor" Stitch sample, shown patient-side.
+
+The export createClient was not found in module [project]/lib/supabase/server.ts [app-rsc] (ecmascript).
+Did you mean to import createSupabaseRscClient?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. 
+✓ Compiled in 357ms
+ GET /login 200 in 167ms (next.js: 76ms, proxy.ts: 10ms, application-code: 81ms)
+✓ Compiled in 109ms
+ GET /login 200 in 98ms (next.js: 19ms, proxy.ts: 9ms, application-code: 69ms)
+ GET / 200 in 189ms (next.js: 10ms, application-code: 178ms)
+Error: Route "/": Next.js encountered runtime data during prerendering.
+
+`cookies()`, `headers()`, `params`, or `searchParams` accessed outside of `<Suspense>` prevents the route from being prerendered, blocking the page load and leading to a slower user experience.
+
+Ways to fix this:
+  - [stream] Provide a placeholder with `<Suspense fallback={...}>` around the data access
+  - [block] Set `export const instant = false` to allow a blocking route
+
+Learn more: https://nextjs.org/docs/messages/blocking-prerender-runtime
+    at createSupabaseRscClient (lib\supabase\server.ts:53:36)
+    at Home (app\page.tsx:22:49)
+  51 |   }
+  52 |
+> 53 |   const cookieStore = await cookies();
+     |                                    ^
+  54 |
+  55 |   return createServerClient(url, anonKey, {
+  56 |     cookies: {

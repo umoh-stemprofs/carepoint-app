@@ -118,6 +118,17 @@ export default function HealthProfilePage() {
   const [previewing, setPreviewing] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
 
+  /** Merge record/draft values in, never touching fields already edited. */
+  function applyLoaded(next: FormState): void {
+    setValues((current) => {
+      const merged = { ...current };
+      (Object.keys(next) as Array<keyof FormState>).forEach((key) => {
+        if (!dirtyFields.current.has(key)) merged[key] = next[key];
+      });
+      return merged;
+    });
+  }
+
   const loadDocuments = useCallback(async (userId: string): Promise<void> => {
     const supabase = tryCreateSupabaseBrowserClient();
     if (!supabase) return;
@@ -264,17 +275,6 @@ export default function HealthProfilePage() {
     dirtyFields.current.add(key);
     setValues((previous) => ({ ...previous, [key]: value }));
     setNotice(null);
-  }
-
-  /** Merge record/draft values in, never touching fields already edited. */
-  function applyLoaded(next: FormState): void {
-    setValues((current) => {
-      const merged = { ...current };
-      (Object.keys(next) as Array<keyof FormState>).forEach((key) => {
-        if (!dirtyFields.current.has(key)) merged[key] = next[key];
-      });
-      return merged;
-    });
   }
 
   async function handleSave(event: FormEvent<HTMLFormElement>) {

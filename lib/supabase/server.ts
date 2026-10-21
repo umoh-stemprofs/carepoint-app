@@ -1,4 +1,6 @@
+import { cookies } from "next/headers";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
 
 /**
  * Phase 02 stub: server-side Supabase client for route handlers and server
@@ -24,5 +26,40 @@ export function createSupabaseServerClient(): SupabaseClient {
 
   return createClient(url, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
+/**
+ * Cookie-scoped Supabase client for React Server Components.
+ *
+ * Unlike createSupabaseServerClient this one carries the signed-in user's
+ * session, so every query it runs is subject to Row Level Security as that
+ * user. Use it whenever a server component renders data belonging to the
+ * person looking at the page.
+ *
+ * The cookie adapter is written through the response returned by the caller's
+ * request so refreshes actually persist; that is why this is async.
+ */
+export async function createSupabaseRscClient(): Promise<SupabaseClient> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !anonKey) {
+    throw new Error(
+      "Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Copy .env.example to .env.local and fill it in.",
+    );
+  }
+
+  const cookieStore = await cookies();
+
+  return createServerClient(url, anonKey, {
+    cookies: {
+      getAll: () => cookieStore.getAll(),
+      setAll(cookiesToSet) {
+        for (const { name, value, options } of cookiesToSet) {
+          cookieStore.set(name, value, options);
+        }
+      },
+    },
   });
 }
