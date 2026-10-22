@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import Icon from "@/components/common/Icon";
+import MeetingLink from "@/components/common/MeetingLink";
 import SpeakButton from "@/components/common/SpeakButton";
 import VideoCallButton from "@/components/common/VideoCall";
 import { tryCreateSupabaseBrowserClient } from "@/lib/supabase/client";
@@ -20,6 +21,7 @@ type AppointmentView = {
   reasonForVisit: string;
   doctorName: string;
   specialty: string;
+  meetingUrl: string | null;
 };
 
 type Row = {
@@ -30,6 +32,7 @@ type Row = {
   status: Status;
   slot_period: string;
   reason_for_visit: string;
+  meeting_url?: string | null;
   doctors?: {
     specialty?: string | null;
     profiles?: { full_name?: string | null } | Array<{ full_name?: string | null }> | null;
@@ -73,6 +76,7 @@ function mapRow(row: Row): AppointmentView {
     reasonForVisit: row.reason_for_visit,
     doctorName: embedded?.full_name || "CarePoint doctor",
     specialty: row.doctors?.specialty || "General practice",
+    meetingUrl: row.meeting_url ?? null,
   };
 }
 
@@ -80,6 +84,10 @@ export default function AppointmentsView() {
   const [appointments, setAppointments] = useState<AppointmentView[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+  // False until proven otherwise: if migration 0010 is not applied the first
+  // select fails on the unknown column, and the cards degrade to no room
+  // button rather than to no appointments at all.
+  const [linksSupported, setLinksSupported] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -88,25 +96,43 @@ export default function AppointmentsView() {
       const supabase = tryCreateSupabaseBrowserClient();
 
       if (supabase) {
-        try {
-          const { data, error } = await supabase
-            .from("appointments")
-            .select(
-              "id, appointment_date, start_time, end_time, status, slot_period, reason_for_visit, doctors(specialty, profiles(full_name))",
-            )
-            .order("start_time", { ascending: true })
-            .limit(50);
+        const columns =
+          "id, appointment_date, start_time, end_time, status, slot_period, reason_for_visit, meeting_url, doctors(specialty, profiles(full_name))";
+        const columnsWithoutLink = columns.replace(
+          ", meeting_url, doctors(specialty, profiles(full_name))",
+          ", doctors(specialty, profiles(full_name))",
+        );
 
-          if (!error && data && !cancelled) {
-            setAppointments((data as unknown as Row[]).map(mapRow));
-            setLoading(false);
-            return;
+        // Always attempt with the link column first, then without: the loop
+        // body is the graceful-degradation path for a pending migration.
+        for (const select of [columns, columnsWithoutLink]) {
+          try {
+            const { data, error } = await supabase
+              .from("appointments")
+              .select(select)
+              .order("start_time", { ascending: true })
+              .limit(50);
+
+            if (error) {
+              if (select === columns) {
+                // The meeting_url column is unknown: migration 0010 pending.
+                setLinksSupported(false);
+                continue;
+              }
+              if (!cancelled) setLoadError(error.message);
+              return;
+            }
+            if (!cancelled && data) {
+              setAppointments((data as unknown as Row[]).map(mapRow));
+              setLoading(false);
+              return;
+            }
+          } catch (error) {
+            if (!cancelled) {
+              setLoadError(error instanceof Error ? error.message : "unreachable");
+              return;
+            }
           }
-          if (!cancelled && error) {
-            setLoadError(error.message);
-          }
-        } catch (error) {
-          if (!cancelled) setLoadError(error instanceof Error ? error.message : "unreachable");
         }
       }
 
@@ -198,6 +224,24 @@ export default function AppointmentsView() {
                 </dt>
                 <dd className="m-0 text-body-lg text-on-surface">{appointment.reasonForVisit}</dd>
               </dl>
+
+              {/* The fallback room, full width: the primary path is the
+                  in-app call, but this must be impossible to miss. */}
+              {appointment.status !== "cancelled" ? (
+                <MeetingLink
+                  appointmentId={appointment.id}
+                  peerLabel={appointment.doctorName}
+                  meetingUrl={appointment.meetingUrl}
+                  supported={linksSupported}
+                  onChange={(url) =>
+                    setAppointments((previous) =>
+                      previous.map((row) =>
+                        row.id === appointment.id ? { ...row, meetingUrl: url } : row,
+                      ),
+                    )
+                  }
+                />
+              ) : null}
 
               <div className="mt-1 flex flex-wrap items-center justify-end gap-space-xs">
                 {appointment.status !== "cancelled" ? (

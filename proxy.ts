@@ -3,7 +3,8 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Route guards (plan Phase 06, decision D1).
+ * Route guards (decision D1). Next.js 16 renamed middleware.ts to proxy.ts;
+ * the guards below are unchanged from the middleware they came from.
  *
  * Supabase is the single source of truth for the session. The role used for the
  * doctor/patient split is read from user metadata, falling back to the
@@ -65,7 +66,7 @@ async function roleFor(
   return "patient";
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -135,6 +136,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   // An explicit allow-list: static assets (/_next/, /favicon.ico, /assets/) and
-  // the public landing page are never evaluated by this middleware.
+  // the public landing page are never evaluated by this proxy.
   matcher: ["/book", "/appointments", "/dashboard", "/login", "/health-profile"],
 };

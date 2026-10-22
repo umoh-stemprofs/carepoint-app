@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import CallRing from "@/components/common/CallRing";
 import EmergencyBanner from "@/components/common/EmergencyBanner";
 import NotificationListener from "@/components/common/NotificationListener";
 import PrototypeNotice from "@/components/common/PrototypeNotice";
@@ -27,6 +28,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="site-content">{children}</div>
         {/* Plan 11.1: realtime appointment toasts on every screen. */}
         <NotificationListener />
+        {/* Incoming-call ringing: the knock the callee never used to hear. */}
+        <CallRing />
         {/* Rulebook Ethical Code: safety and honesty stay on every screen. */}
         <PrototypeNotice />
         <EmergencyBanner />

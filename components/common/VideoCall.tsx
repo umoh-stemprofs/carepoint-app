@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import Icon from "@/components/common/Icon";
+import MeetingLink from "@/components/common/MeetingLink";
+import { InCallDiagnostics, InCallNotes } from "@/components/doctor/InCallTools";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 /**
@@ -27,8 +29,25 @@ import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 const ICE_GATHER_TIMEOUT_MS = 3000;
 const POLL_MS = 1000;
+/** How often the caller re-knocks until the peer answers. */
+const RING_INTERVAL_MS = 20_000;
 /** A handshake older than this is stale (the other side is no longer waiting). */
 const SIGNAL_MAX_AGE_MS = 60_000;
+
+/**
+ * Appointments that have a call room open on this page right now.
+ *
+ * CallRing listens for CALL_STATE_EVENT so it can keep its incoming-call
+ * overlay from stacking on top of a call the user already has open — the
+ * peer's knock is ignored while my own room for that appointment is live.
+ */
+const openRooms = new Set<string>();
+
+export const CALL_STATE_EVENT = "carepoint:call-state";
+
+export function isCallOpen(appointmentId: string): boolean {
+  return openRooms.has(appointmentId);
+}
 
 const RTC_CONFIG: RTCConfiguration = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
@@ -64,7 +83,7 @@ function waitForIceGathering(pc: RTCPeerConnection): Promise<void> {
   });
 }
 
-function VideoCallRoom({
+export function VideoCallRoom({
   appointmentId,
   peerName,
   onClose,
@@ -81,6 +100,7 @@ function VideoCallRoom({
   const seenRef = useRef<Set<string>>(new Set());
   const roleRef = useRef<"" | "caller" | "callee">("");
   const pollRef = useRef<number | null>(null);
+  const ringRef = useRef<number | null>(null);
   const closedRef = useRef(false);
 
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -93,6 +113,26 @@ function VideoCallRoom({
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(true);
+  // The fallback room: read once at mount, written by either side's button.
+  const [meetingUrl, setMeetingUrl] = useState<string | null>(null);
+  const [linksSupported, setLinksSupported] = useState(true);
+  // In-call toolbox (doctor side only): am I the physician on this appointment,
+  // and which panel — notes or AI diagnostics — is pulled up right now. Exactly
+  // one at a time, so the video keeps its space while the doctor works.
+  const [isDoctor, setIsDoctor] = useState(false);
+  const [visitReason, setVisitReason] = useState("");
+  const [tool, setTool] = useState<null | "notes" | "diagnostics">(null);
+
+  // Tell CallRing this appointment is spoken for, for as long as this room
+  // exists, so the peer's knock never stacks a second overlay on the call.
+  useEffect(() => {
+    openRooms.add(appointmentId);
+    window.dispatchEvent(new Event(CALL_STATE_EVENT));
+    return () => {
+      openRooms.delete(appointmentId);
+      window.dispatchEvent(new Event(CALL_STATE_EVENT));
+    };
+  }, [appointmentId]);
 
   // Callback refs: React re-runs them whenever the element or the stream
   // changes, which is exactly when srcObject needs (re)assigning.
@@ -115,6 +155,7 @@ function VideoCallRoom({
       window.clearInterval(pollRef.current);
       pollRef.current = null;
     }
+    stopRinging();
     pcRef.current?.close();
     pcRef.current = null;
     localStreamRef.current?.getTracks().forEach((track) => track.stop());
@@ -123,6 +164,12 @@ function VideoCallRoom({
 
   useEffect(() => {
     let cancelled = false;
+    // Fresh session: React re-runs this effect after the previous run's
+    // cleanup (a Strict Mode remount in development, or a room reopened for
+    // the same appointment), and that cleanup marks the room as stopped. The
+    // flag has to be cleared here or every run after the first would bail out
+    // before the camera is ever asked for.
+    closedRef.current = false;
 
     async function setup() {
       const supabase = createSupabaseBrowserClient();
@@ -142,7 +189,7 @@ function VideoCallRoom({
       // Both sides must know who the other is before the handshake.
       const { data: appointment, error: appointmentError } = await supabase
         .from("appointments")
-        .select("id, patient_id, doctor_id, status")
+        .select("id, patient_id, doctor_id, status, reason_for_visit")
         .eq("id", appointmentId)
         .maybeSingle();
       if (cancelled || closedRef.current) return;
@@ -151,7 +198,12 @@ function VideoCallRoom({
         setFailure("This appointment could not be opened for a call.");
         return;
       }
-      const row = appointment as { patient_id: string; doctor_id: string; status: string };
+      const row = appointment as {
+        patient_id: string;
+        doctor_id: string;
+        status: string;
+        reason_for_visit?: string | null;
+      };
       if (row.status === "cancelled") {
         setPhase("error");
         setFailure("This appointment was cancelled, so there is no call to join.");
@@ -159,6 +211,28 @@ function VideoCallRoom({
       }
       peerIdRef.current =
         row.patient_id === meRef.current ? row.doctor_id : row.patient_id;
+
+      // Only the physician side gets the toolbox, and the visit reason is what
+      // seeds both the note and the AI panel — the patient's side stays a call.
+      setIsDoctor(row.doctor_id === user.id);
+      setVisitReason((row.reason_for_visit ?? "").trim());
+
+      // The shared fallback room, if one was minted already — plus a probe for
+      // whether this database even has the column (migration 000010 might not
+      // be applied yet; the call must not depend on it).
+      const linkResult = await supabase
+        .from("appointments")
+        .select("meeting_url")
+        .eq("id", appointmentId)
+        .maybeSingle();
+      if (cancelled || closedRef.current) return;
+      if (linkResult.error) {
+        setLinksSupported(false);
+      } else {
+        setMeetingUrl(
+          (linkResult.data as { meeting_url?: string | null } | null)?.meeting_url ?? null,
+        );
+      }
 
       let stream: MediaStream;
       try {
@@ -213,6 +287,19 @@ function VideoCallRoom({
       setPhase("waiting");
       setStatus(`Waiting for ${peerName} to join…`);
 
+      // Knock on the peer's open page — once now, then every 20s until they
+      // answer or the call dies. Before this, the other side simply never
+      // learned a call was waiting for them.
+      void knock();
+      ringRef.current = window.setInterval(() => {
+        const state = pcRef.current?.connectionState;
+        if (closedRef.current || state === "connected" || state === "failed") {
+          stopRinging();
+          return;
+        }
+        void knock();
+      }, RING_INTERVAL_MS);
+
       pollRef.current = window.setInterval(() => {
         void pollSignals();
       }, POLL_MS);
@@ -252,6 +339,33 @@ function VideoCallRoom({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentId]);
+
+  function stopRinging(): void {
+    if (ringRef.current) {
+      window.clearInterval(ringRef.current);
+      ringRef.current = null;
+    }
+  }
+
+  /**
+   * One knock. Errors are swallowed on purpose: until migration 000010 is
+   * applied the CHECK on `kind` rejects 'ring', and the call itself must
+   * keep working exactly as it did before.
+   */
+  async function knock(): Promise<void> {
+    const supabase = supabaseRef.current;
+    if (!supabase || closedRef.current || !meRef.current) return;
+    try {
+      await supabase.from("call_signals").insert({
+        appointment_id: appointmentId,
+        sender_id: meRef.current,
+        kind: "ring",
+        payload: "",
+      });
+    } catch {
+      // Best effort — the card's room link is the fallback path.
+    }
+  }
 
   async function sendSignal(kind: SignalRow["kind"], payload: string): Promise<void> {
     const supabase = supabaseRef.current;
@@ -401,9 +515,11 @@ function VideoCallRoom({
       role="dialog"
       aria-modal="true"
       aria-label={`Video call with ${peerName}`}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-space-xs sm:p-space-sm"
+      className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-black/85 p-space-xs sm:p-space-sm"
     >
-      <div className="flex w-full max-w-3xl flex-col gap-space-sm rounded-xl bg-white p-space-sm">
+      {/* margin: auto (not align-items: center) so a tall toolbox can still
+          scroll instead of clipping its top off the screen. */}
+      <div className="m-auto flex w-full max-w-3xl flex-col gap-space-sm rounded-xl bg-white p-space-sm">
         <div className="flex flex-wrap items-center justify-between gap-space-xs">
           <div className="min-w-0">
             <p className="eyebrow mb-0">DOCTOR VIDEO CALL</p>
@@ -465,6 +581,73 @@ function VideoCallRoom({
             <Icon name="error" size={28} className="mt-0.5 shrink-0" />
             {failure}
           </p>
+        ) : null}
+
+        {/* The escape hatch: STUN-only peer-to-peer cannot pass a symmetric
+            NAT, so whenever this room is not yet live the shared Jitsi room
+            is offered instead of leaving both sides staring at a spinner. */}
+        {phase !== "connected" ? (
+          <MeetingLink
+            appointmentId={appointmentId}
+            peerLabel={peerName}
+            meetingUrl={meetingUrl}
+            supported={linksSupported}
+            onChange={setMeetingUrl}
+            compact
+          />
+        ) : null}
+
+        {/* The physician's toolbox: pull up AI diagnostics or the note pad
+            without leaving the call — the video keeps running above them. */}
+        {isDoctor ? (
+          <div className="flex flex-wrap items-center justify-center gap-space-xs">
+            <button
+              type="button"
+              aria-pressed={tool === "diagnostics"}
+              onClick={() =>
+                setTool((current) => (current === "diagnostics" ? null : "diagnostics"))
+              }
+              className={`flex min-h-14 items-center justify-center gap-2 rounded-lg px-space-sm text-label-lg press ${
+                tool === "diagnostics"
+                  ? "bg-secondary text-white shadow-tactile-sm"
+                  : "border-2 border-secondary bg-white text-secondary"
+              }`}
+            >
+              <Icon name="psychology" size={26} />
+              AI DIAGNOSTICS
+            </button>
+
+            <button
+              type="button"
+              aria-pressed={tool === "notes"}
+              onClick={() => setTool((current) => (current === "notes" ? null : "notes"))}
+              className={`flex min-h-14 items-center justify-center gap-2 rounded-lg px-space-sm text-label-lg press ${
+                tool === "notes"
+                  ? "bg-primary text-white shadow-tactile-sm"
+                  : "border-2 border-primary bg-white text-primary"
+              }`}
+            >
+              <Icon name="edit" size={26} />
+              CALL NOTES
+            </button>
+          </div>
+        ) : null}
+
+        {tool === "notes" ? (
+          <InCallNotes
+            appointmentId={appointmentId}
+            reasonForVisit={visitReason}
+            peerName={peerName}
+            onClose={() => setTool(null)}
+          />
+        ) : null}
+
+        {tool === "diagnostics" ? (
+          <InCallDiagnostics
+            reasonForVisit={visitReason}
+            peerName={peerName}
+            onClose={() => setTool(null)}
+          />
         ) : null}
 
         <div className="flex flex-wrap items-center justify-center gap-space-sm">

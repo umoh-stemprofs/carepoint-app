@@ -34,6 +34,34 @@ const TIME_SLOTS: Array<{ period: SlotPeriod; time: string; label: string; icon:
   { period: "evening", time: "17:00", label: "EVENING", icon: "dark_mode" },
 ];
 
+/**
+ * Any other hour of the day (8:00–20:00, hourly — appointments last an hour).
+ *
+ * Bookings are no longer pinned to the four tiles above: the wizard offers the
+ * rest of the day too, and the period enum the RPC stores is derived from the
+ * hour, so a doctor's morning/midday/afternoon/evening switch still governs
+ * whether the hour can be taken.
+ */
+function periodForTime(time: string): SlotPeriod {
+  const hour = Number(time.slice(0, 2));
+  if (hour < 12) return "morning";
+  if (hour < 15) return "midday";
+  if (hour < 17) return "afternoon";
+  return "evening";
+}
+
+const PERIOD_LABELS: Record<SlotPeriod, string> = {
+  morning: "MORNING",
+  midday: "MIDDAY",
+  afternoon: "AFTERNOON",
+  evening: "EVENING",
+};
+
+const FEATURED_TIMES = new Set(TIME_SLOTS.map((slot) => slot.time));
+const OTHER_HOURS = Array.from({ length: 13 }, (_, index) =>
+  `${String(index + 8).padStart(2, "0")}:00`,
+).filter((time) => !FEATURED_TIMES.has(time));
+
 const DAY_LABELS = ["TODAY", "TOMORROW", "NEXT DAY"] as const;
 const DAY_ICONS = ["wb_sunny", "partly_cloudy_day", "event"] as const;
 
@@ -75,7 +103,12 @@ export default function BookPage() {
   const [doctorClosed, setDoctorClosed] = useState<SlotPeriod[]>([]);
   const [doctorId, setDoctorId] = useState<string | null>(null);
   const [dateStr, setDateStr] = useState<string | null>(null);
-  const [slotPeriod, setSlotPeriod] = useState<SlotPeriod | null>(null);
+  // Exact WAT start time ("HH:mm"). The four featured tiles and the collapsible
+  // "other hours" list below both write this one value, so any hour of the day
+  // can be booked while the booking RPC still stores a period enum.
+  const [timeStr, setTimeStr] = useState<string | null>(null);
+  // The collapsible list of the rest of the day's hours (step 2).
+  const [showOtherHours, setShowOtherHours] = useState(false);
   const [reason, setReason] = useState("");
   const [issues, setIssues] = useState<string[]>([]);
   const [conflict, setConflict] = useState<string | null>(null);
@@ -106,25 +139,24 @@ export default function BookPage() {
   }
 
   const selectedDoctor = doctors.find((doctor) => doctor.id === doctorId) ?? null;
-  const selectedSlot = TIME_SLOTS.find((slot) => slot.period === slotPeriod) ?? null;
 
   const closedPeriods = new Set(doctorClosed);
 
-  /** "passed" = already gone by today; "closed" = the doctor shut that period. */
-  function slotState(slot: { period: SlotPeriod; time: string }): "open" | "passed" | "closed" {
-    if (closedPeriods.has(slot.period)) return "closed";
+  /** "passed" = already gone by today; "closed" = the doctor shut that part of the day. */
+  function slotState(time: string): "open" | "passed" | "closed" {
+    if (closedPeriods.has(periodForTime(time))) return "closed";
     if (
       dateStr &&
       dateStr === today &&
       nowMs > 0 &&
-      watLocalToUtc(dateStr, slot.time).getTime() <= nowMs
+      watLocalToUtc(dateStr, time).getTime() <= nowMs
     ) {
       return "passed";
     }
     return "open";
   }
 
-  const selectedSlotState = selectedSlot ? slotState(selectedSlot) : "open";
+  const selectedSlotState = timeStr ? slotState(timeStr) : "open";
 
   useEffect(() => {
     let cancelled = false;
@@ -271,9 +303,9 @@ export default function BookPage() {
   }
 
   function buildPayload(): BookingInput | null {
-    if (!doctorId || !dateStr || !slotPeriod || !selectedSlot) return null;
+    if (!doctorId || !dateStr || !timeStr) return null;
 
-    const start = watLocalToUtc(dateStr, selectedSlot.time);
+    const start = watLocalToUtc(dateStr, timeStr);
     const end = addHours(start, 1);
 
     return {
@@ -281,7 +313,7 @@ export default function BookPage() {
       appointmentDate: dateStr,
       startTime: start.toISOString(),
       endTime: end.toISOString(),
-      slotPeriod,
+      slotPeriod: periodForTime(timeStr),
       reasonForVisit: reason.trim(),
     };
   }
@@ -603,13 +635,14 @@ export default function BookPage() {
               All times are West Africa Time (WAT).
               {dateStr === today
                 ? " Times that have already passed today cannot be booked."
-                : ""}
+                : ""}{" "}
+              Need another hour? Expand “Other hours this day” below.
             </p>
 
             <div role="radiogroup" aria-label="Time of day" className="grid grid-cols-2 gap-3">
               {TIME_SLOTS.map((slot) => {
-                const active = slotPeriod === slot.period;
-                const state = slotState(slot);
+                const active = timeStr === slot.time;
+                const state = slotState(slot.time);
                 const blocked = state !== "open";
                 return (
                   <button
@@ -619,7 +652,7 @@ export default function BookPage() {
                     aria-checked={active}
                     aria-disabled={blocked}
                     disabled={blocked}
-                    onClick={() => setSlotPeriod(slot.period)}
+                    onClick={() => setTimeStr(slot.time)}
                     className={`relative flex min-h-36 flex-col items-start justify-between gap-2 rounded-xl p-4 press disabled:cursor-not-allowed disabled:opacity-60 ${
                       active
                         ? "bg-primary-container text-white shadow-tactile-sm"
@@ -652,6 +685,72 @@ export default function BookPage() {
             </div>
           </section>
 
+          {/* The rest of the day, collapsed until the patient asks for it. */}
+          <section aria-label="Other hours of the day" className="mt-space-lg">
+            <button
+              type="button"
+              aria-expanded={showOtherHours}
+              onClick={() => setShowOtherHours((open) => !open)}
+              className="flex min-h-16 w-full items-center justify-between gap-space-xs rounded-xl border-2 border-outline-variant bg-white px-space-sm text-on-surface press"
+            >
+              <span className="flex items-center gap-2 text-label-lg uppercase">
+                <Icon name="schedule" size={26} className="text-primary" />
+                Other hours this day
+              </span>
+              <span className="flex items-center gap-2 text-label-lg uppercase text-primary">
+                {showOtherHours ? "Hide" : `${OTHER_HOURS.length} more times`}
+                <Icon name={showOtherHours ? "close" : "add"} size={26} />
+              </span>
+            </button>
+
+            {showOtherHours ? (
+              <div className="mt-space-xs rounded-xl border-2 border-outline-variant bg-white p-space-sm">
+                <p className="m-0 mb-space-xs text-body-lg text-on-surface-variant">
+                  Any hour from 8:00 AM to 8:00 PM. The same rules apply: hours the
+                  doctor has closed, or that have already passed today, cannot be booked.
+                </p>
+
+                <div
+                  role="radiogroup"
+                  aria-label="Hours of the day"
+                  className="grid grid-cols-3 gap-2 sm:grid-cols-4"
+                >
+                  {OTHER_HOURS.map((time) => {
+                    const active = timeStr === time;
+                    const state = slotState(time);
+                    const blocked = state !== "open";
+                    return (
+                      <button
+                        key={time}
+                        type="button"
+                        role="radio"
+                        aria-checked={active}
+                        aria-disabled={blocked}
+                        disabled={blocked}
+                        onClick={() => setTimeStr(time)}
+                        className={`relative flex min-h-20 flex-col items-center justify-center gap-0.5 rounded-xl border-2 p-2 press disabled:cursor-not-allowed disabled:opacity-60 ${
+                          active
+                            ? "border-primary bg-primary-container text-white shadow-tactile-sm"
+                            : "border-surface-container-high bg-surface-container-low text-on-surface"
+                        }`}
+                      >
+                        <span className="text-headline-lg-mobile">{time}</span>
+                        <span className="text-label-lg uppercase">
+                          {PERIOD_LABELS[periodForTime(time)]}
+                        </span>
+                        {blocked ? (
+                          <span className="absolute top-1 right-1 rounded-full bg-surface-container-highest px-1.5 text-label-lg uppercase text-on-surface-variant">
+                            {state === "passed" ? "PASSED" : "CLOSED"}
+                          </span>
+                        ) : null}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
+          </section>
+
           <div className="mt-space-sm flex items-center gap-space-xs rounded-xl bg-surface-container-high p-space-xs">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-white text-primary">
               <Icon name="video_call" size={32} />
@@ -667,7 +766,7 @@ export default function BookPage() {
           <button
             type="button"
             onClick={() => goNext(2)}
-            disabled={!dateStr || !slotPeriod || selectedSlotState !== "open"}
+            disabled={!dateStr || !timeStr || selectedSlotState !== "open"}
             className="mt-space-md flex min-h-16 w-full items-center justify-center gap-space-xs rounded-xl bg-primary text-label-xl text-white shadow-tactile press disabled:cursor-not-allowed disabled:opacity-50"
           >
             NEXT
@@ -726,7 +825,7 @@ export default function BookPage() {
               ["Doctor", selectedDoctor?.name ?? "—"],
               ["Day", days.find((day) => day.date === dateStr)?.label ?? "—"],
               ["Date", dateStr ? formatInWat(dateStr, "EEEE d MMMM yyyy") : "—"],
-              ["Time", selectedSlot ? `${selectedSlot.time} WAT` : "—"],
+              ["Time", timeStr ? `${timeStr} WAT` : "—"],
               ["Reason", reason.trim() || "—"],
             ].map(([label, value]) => (
               <div key={label} className="flex justify-between gap-4 border-b border-surface-container-high pb-space-xs last:border-0">

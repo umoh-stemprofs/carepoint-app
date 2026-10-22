@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import Icon from "@/components/common/Icon";
+import MeetingLink from "@/components/common/MeetingLink";
 import Topbar from "@/components/common/Topbar";
 import VideoCallButton from "@/components/common/VideoCall";
 import AIDiagnosticDrawer from "@/components/doctor/AIDiagnosticDrawer";
@@ -24,6 +25,7 @@ type QueueItem = {
   slotPeriod: string;
   reasonForVisit: string;
   appointmentDate: string;
+  meetingUrl: string | null;
 };
 
 type Row = {
@@ -35,6 +37,7 @@ type Row = {
   slot_period: string;
   reason_for_visit: string;
   appointment_date: string;
+  meeting_url?: string | null;
   patient?: { full_name?: string | null } | Array<{ full_name?: string | null }> | null;
 };
 
@@ -72,6 +75,7 @@ function mapRow(row: Row): QueueItem {
     slotPeriod: row.slot_period,
     reasonForVisit: row.reason_for_visit,
     appointmentDate: row.appointment_date,
+    meetingUrl: row.meeting_url ?? null,
   };
 }
 
@@ -113,14 +117,18 @@ function QueueCard({
   item,
   isToday,
   busy,
+  linksSupported,
   onAction,
   onOpenRecord,
+  onLinkChange,
 }: {
   item: QueueItem;
   isToday: boolean;
   busy: boolean;
+  linksSupported: boolean;
   onAction: (status: QueueAction) => void;
   onOpenRecord: (item: QueueItem) => void;
+  onLinkChange: (id: string, url: string) => void;
 }) {
   const isFinished = item.status === "completed" || item.status === "cancelled";
 
@@ -192,6 +200,19 @@ function QueueCard({
           <VideoCallButton appointmentId={item.id} peerName={item.patientName} />
         ) : null}
       </div>
+
+      {/* Fallback room, full width and unmissable: the in-app call is the
+          primary path, but a symmetric NAT can defeat it with no TURN relay
+          in this build — so the doctor gets a Jitsi room to hand over. */}
+      {item.status !== "cancelled" ? (
+        <MeetingLink
+          appointmentId={item.id}
+          peerLabel={item.patientName}
+          meetingUrl={item.meetingUrl}
+          supported={linksSupported}
+          onChange={(url) => onLinkChange(item.id, url)}
+        />
+      ) : null}
     </article>
   );
 }
@@ -201,6 +222,10 @@ export default function DoctorDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [recordItem, setRecordItem] = useState<QueueItem | null>(null);
+  // False if migration 0010 is pending: the first select then fails on the
+  // unknown meeting_url column and the retry drops it, so the queue still
+  // renders — just without the room button.
+  const [linksSupported, setLinksSupported] = useState(true);
   // Read in the effect, never during render: "current time" APIs are blocked
   // while prerendering this client component.
   const [today, setToday] = useState("");
@@ -250,26 +275,42 @@ export default function DoctorDashboardPage() {
       const supabase = tryCreateSupabaseBrowserClient();
 
       if (supabase) {
-        try {
-          const { data, error } = await supabase
-            .from("appointments")
-            .select(
-              "id, patient_id, appointment_date, start_time, end_time, status, slot_period, reason_for_visit, patient:profiles(full_name)",
-            )
-            .order("start_time", { ascending: true })
-            .limit(50);
+        const columns =
+          "id, patient_id, appointment_date, start_time, end_time, status, slot_period, reason_for_visit, meeting_url, patient:profiles(full_name)";
+        const columnsWithoutLink = columns.replace(
+          ", meeting_url, patient:profiles(full_name)",
+          ", patient:profiles(full_name)",
+        );
 
-          if (!error && data && !cancelled) {
-            setItems((data as unknown as Row[]).map(mapRow));
-            setLoading(false);
-            return;
-          }
-          if (!cancelled && error) {
-            setLoadError(error.message);
-          }
-        } catch (error) {
-          if (!cancelled) {
-            setLoadError(error instanceof Error ? error.message : "the queue was unreachable");
+        // Try the link column first, drop it only if the database does not
+        // know it yet — the effect runs once on mount, so there is no state
+        // to read here; the first failure is the only signal needed.
+        for (const select of [columns, columnsWithoutLink]) {
+          try {
+            const { data, error } = await supabase
+              .from("appointments")
+              .select(select)
+              .order("start_time", { ascending: true })
+              .limit(50);
+
+            if (error) {
+              if (select === columns) {
+                setLinksSupported(false);
+                continue;
+              }
+              if (!cancelled) setLoadError(error.message);
+              return;
+            }
+            if (!cancelled && data) {
+              setItems((data as unknown as Row[]).map(mapRow));
+              setLoading(false);
+              return;
+            }
+          } catch (error) {
+            if (!cancelled) {
+              setLoadError(error instanceof Error ? error.message : "the queue was unreachable");
+              return;
+            }
           }
         }
       }
@@ -352,8 +393,14 @@ export default function DoctorDashboardPage() {
               item={item}
               isToday
               busy={busyId === item.id}
+              linksSupported={linksSupported}
               onAction={(status) => void updateStatus(item.id, status)}
               onOpenRecord={setRecordItem}
+              onLinkChange={(id, url) =>
+                setItems((previous) =>
+                  previous.map((row) => (row.id === id ? { ...row, meetingUrl: url } : row)),
+                )
+              }
             />
           ))}
         </section>
@@ -371,8 +418,14 @@ export default function DoctorDashboardPage() {
               item={item}
               isToday={false}
               busy={busyId === item.id}
+              linksSupported={linksSupported}
               onAction={(status) => void updateStatus(item.id, status)}
               onOpenRecord={setRecordItem}
+              onLinkChange={(id, url) =>
+                setItems((previous) =>
+                  previous.map((row) => (row.id === id ? { ...row, meetingUrl: url } : row)),
+                )
+              }
             />
           ))}
         </section>

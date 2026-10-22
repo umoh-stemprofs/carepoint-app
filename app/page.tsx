@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 
 import Icon from "@/components/common/Icon";
 import SpeakButton from "@/components/common/SpeakButton";
@@ -17,8 +18,42 @@ import { createSupabaseRscClient } from "@/lib/supabase/server";
  * A doctor has no appointment to book, so for that role the same two-card shell
  * offers the working day instead: the queue and the diary. Middleware already
  * keeps physicians out of /book; this keeps the marketing copy away from them too.
+ *
+ * Only the card pair depends on the viewer's role, so the shell stays static
+ * and the role lookup streams in behind a Suspense boundary. Caching the whole
+ * page would be wrong — the cache key cannot vary on the session cookie, and a
+ * shared copy would hand a doctor the patient's booking buttons.
  */
-export default async function Home() {
+export default function Home() {
+  return (
+    <main className="home-page">
+      <Topbar label="TELEHEALTH AND AI CLINICAL SUPPORT" />
+
+      <Suspense
+        fallback={
+          <section aria-label="Main actions" className="flex flex-col gap-space-md">
+            <div
+              aria-hidden="true"
+              className="min-h-32 rounded-xl bg-surface-container-low"
+            />
+            <div
+              aria-hidden="true"
+              className="min-h-32 rounded-xl bg-surface-container-low"
+            />
+            <p className="text-center text-body-lg text-on-surface-variant" role="status">
+              Loading your options…
+            </p>
+          </section>
+        }
+      >
+        <RoleCards />
+      </Suspense>
+    </main>
+  );
+}
+
+/** Resolves the viewer's role on the server and picks the matching cards. */
+async function RoleCards() {
   const supabase = await createSupabaseRscClient();
   const {
     data: { user },
@@ -34,15 +69,7 @@ export default async function Home() {
     role = data?.role ?? null;
   }
 
-  const isDoctor = role === "doctor";
-
-  return (
-    <main className="home-page">
-      <Topbar label="TELEHEALTH AND AI CLINICAL SUPPORT" />
-
-      {isDoctor ? <DoctorHome /> : <PatientHome />}
-    </main>
-  );
+  return role === "doctor" ? <DoctorHome /> : <PatientHome />;
 }
 
 function PatientHome() {
